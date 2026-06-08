@@ -14,16 +14,308 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activities: {
+        Row: {
+          amount: number
+          category: Database["public"]["Enums"]["activity_category"]
+          created_at: string
+          factor_slug: string
+          id: string
+          kg_co2e: number
+          notes: string | null
+          occurred_at: string
+          unit: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          category: Database["public"]["Enums"]["activity_category"]
+          created_at?: string
+          factor_slug: string
+          id?: string
+          kg_co2e: number
+          notes?: string | null
+          occurred_at?: string
+          unit: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          category?: Database["public"]["Enums"]["activity_category"]
+          created_at?: string
+          factor_slug?: string
+          id?: string
+          kg_co2e?: number
+          notes?: string | null
+          occurred_at?: string
+          unit?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activities_factor_slug_fkey"
+            columns: ["factor_slug"]
+            isOneToOne: false
+            referencedRelation: "activity_factors"
+            referencedColumns: ["slug"]
+          },
+        ]
+      }
+      activity_factors: {
+        Row: {
+          category: Database["public"]["Enums"]["activity_category"]
+          created_at: string
+          id: string
+          kg_co2e_per_unit: number
+          name: string
+          region: string | null
+          slug: string
+          source: string | null
+          unit: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["activity_category"]
+          created_at?: string
+          id?: string
+          kg_co2e_per_unit: number
+          name: string
+          region?: string | null
+          slug: string
+          source?: string | null
+          unit: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["activity_category"]
+          created_at?: string
+          id?: string
+          kg_co2e_per_unit?: number
+          name?: string
+          region?: string | null
+          slug?: string
+          source?: string | null
+          unit?: string
+        }
+        Relationships: []
+      }
+      challenges: {
+        Row: {
+          category: Database["public"]["Enums"]["activity_category"]
+          created_at: string
+          description: string
+          difficulty: number
+          duration_days: number
+          expected_kg_co2e_saved: number
+          id: string
+          is_active: boolean
+          slug: string
+          title: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["activity_category"]
+          created_at?: string
+          description: string
+          difficulty?: number
+          duration_days: number
+          expected_kg_co2e_saved?: number
+          id?: string
+          is_active?: boolean
+          slug: string
+          title: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["activity_category"]
+          created_at?: string
+          description?: string
+          difficulty?: number
+          duration_days?: number
+          expected_kg_co2e_saved?: number
+          id?: string
+          is_active?: boolean
+          slug?: string
+          title?: string
+        }
+        Relationships: []
+      }
+      coach_messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["coach_role"]
+          token_count: number | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["coach_role"]
+          token_count?: number | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["coach_role"]
+          token_count?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          baseline_kg_co2e_year: number | null
+          country_code: string | null
+          created_at: string
+          display_name: string | null
+          handle: string | null
+          id: string
+          onboarding_completed: boolean
+          updated_at: string
+        }
+        Insert: {
+          baseline_kg_co2e_year?: number | null
+          country_code?: string | null
+          created_at?: string
+          display_name?: string | null
+          handle?: string | null
+          id: string
+          onboarding_completed?: boolean
+          updated_at?: string
+        }
+        Update: {
+          baseline_kg_co2e_year?: number | null
+          country_code?: string | null
+          created_at?: string
+          display_name?: string | null
+          handle?: string | null
+          id?: string
+          onboarding_completed?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      rate_limits: {
+        Row: {
+          bucket: string
+          count: number
+          id: string
+          user_id: string
+          window_start: string
+        }
+        Insert: {
+          bucket: string
+          count?: number
+          id?: string
+          user_id: string
+          window_start?: string
+        }
+        Update: {
+          bucket?: string
+          count?: number
+          id?: string
+          user_id?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
+      user_challenges: {
+        Row: {
+          challenge_id: string
+          completed_at: string | null
+          created_at: string
+          ends_at: string
+          id: string
+          kg_co2e_saved: number
+          started_at: string
+          status: Database["public"]["Enums"]["challenge_status"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          challenge_id: string
+          completed_at?: string | null
+          created_at?: string
+          ends_at: string
+          id?: string
+          kg_co2e_saved?: number
+          started_at?: string
+          status?: Database["public"]["Enums"]["challenge_status"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          challenge_id?: string
+          completed_at?: string | null
+          created_at?: string
+          ends_at?: string
+          id?: string
+          kg_co2e_saved?: number
+          started_at?: string
+          status?: Database["public"]["Enums"]["challenge_status"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_challenges_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      activity_category:
+        | "transport"
+        | "energy"
+        | "food"
+        | "shopping"
+        | "travel"
+        | "waste"
+        | "other"
+      app_role: "admin" | "user"
+      challenge_status: "active" | "completed" | "abandoned"
+      coach_role: "user" | "assistant" | "system"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +442,19 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      activity_category: [
+        "transport",
+        "energy",
+        "food",
+        "shopping",
+        "travel",
+        "waste",
+        "other",
+      ],
+      app_role: ["admin", "user"],
+      challenge_status: ["active", "completed", "abandoned"],
+      coach_role: ["user", "assistant", "system"],
+    },
   },
 } as const
