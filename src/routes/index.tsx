@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Leaf, LineChart, Sparkles, Trophy, ShieldCheck, Gauge } from "lucide-react";
+import logoUrl from "@/assets/carbonlens-logo.png";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,12 +28,14 @@ function Landing() {
       <header className="border-b border-border/60">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <Link to="/" className="flex items-center gap-2 font-semibold tracking-tight">
-            <span
+            <img
+              src={logoUrl}
+              alt=""
               aria-hidden
-              className="grid size-8 place-items-center rounded-md bg-primary/15 text-primary"
-            >
-              <Leaf className="size-4" />
-            </span>
+              width={32}
+              height={32}
+              className="size-8 rounded-md"
+            />
             <span>CarbonLens</span>
           </Link>
           <nav aria-label="Primary" className="flex items-center gap-2 text-sm">

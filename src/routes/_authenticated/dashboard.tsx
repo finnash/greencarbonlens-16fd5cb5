@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { Leaf, LogOut, Sparkles } from "lucide-react";
+import { LogOut, Sparkles } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,15 @@ import {
   PARIS_BUDGET_KG_PER_YEAR,
   budgetUsedPct,
   formatKgCo2e,
+  sumEmissions,
 } from "@/lib/carbon";
 import { getMyProfile } from "@/lib/profile.functions";
+import { listActivities } from "@/lib/activity.functions";
+import { QuickLogSheet } from "@/components/QuickLogSheet";
+import { TrendChart } from "@/components/dashboard/TrendChart";
+import { CategoryBreakdown } from "@/components/dashboard/CategoryBreakdown";
+import { RecentActivity } from "@/components/dashboard/RecentActivity";
+import logoUrl from "@/assets/carbonlens-logo.png";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -29,9 +36,14 @@ function Dashboard() {
   const navigate = useNavigate();
   const { user } = Route.useRouteContext();
   const fetchProfile = useServerFn(getMyProfile);
+  const fetchActivities = useServerFn(listActivities);
   const { data, isLoading } = useQuery({
     queryKey: ["my-profile", user.id],
     queryFn: () => fetchProfile(),
+  });
+  const { data: actData } = useQuery({
+    queryKey: ["activities", user.id],
+    queryFn: () => fetchActivities({ data: {} }),
   });
 
   async function signOut() {
@@ -42,21 +54,26 @@ function Dashboard() {
   const profile = data?.profile;
   const baseline = Number(profile?.baseline_kg_co2e_year ?? 0);
   const pct = budgetUsedPct(baseline);
+  const activities = actData?.activities ?? [];
+  const last30Total = sumEmissions(activities);
 
   return (
     <main id="main-content" className="min-h-dvh bg-background text-foreground">
       <header className="border-b border-border/60">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex items-center gap-2 text-sm font-semibold tracking-tight">
-            <span
+            <img
+              src={logoUrl}
+              alt=""
               aria-hidden
-              className="grid size-8 place-items-center rounded-md bg-primary/15 text-primary"
-            >
-              <Leaf className="size-4" />
-            </span>
+              width={32}
+              height={32}
+              className="size-8 rounded-md"
+            />
             <span>CarbonLens</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            {profile?.onboarding_completed ? <QuickLogSheet userId={user.id} /> : null}
             <span className="hidden text-xs text-muted-foreground sm:inline">
               {user.email}
             </span>
@@ -111,19 +128,37 @@ function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            <StatCard label="Annual baseline" value={formatKgCo2e(baseline)} suffix="CO₂e / yr" />
-            <StatCard
-              label="vs. Paris 1.5 °C budget"
-              value={`${pct}%`}
-              suffix={`of ${formatKgCo2e(PARIS_BUDGET_KG_PER_YEAR)}`}
-            />
-            <StatCard
-              label="vs. global average"
-              value={`${Math.round((baseline / GLOBAL_AVG_KG_PER_YEAR) * 100)}%`}
-              suffix={`of ${formatKgCo2e(GLOBAL_AVG_KG_PER_YEAR)}`}
-            />
-          </div>
+          <>
+            <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <StatCard label="Annual baseline" value={formatKgCo2e(baseline)} suffix="CO₂e / yr" />
+              <StatCard
+                label="vs. Paris 1.5 °C budget"
+                value={`${pct}%`}
+                suffix={`of ${formatKgCo2e(PARIS_BUDGET_KG_PER_YEAR)}`}
+              />
+              <StatCard
+                label="vs. global average"
+                value={`${Math.round((baseline / GLOBAL_AVG_KG_PER_YEAR) * 100)}%`}
+                suffix={`of ${formatKgCo2e(GLOBAL_AVG_KG_PER_YEAR)}`}
+              />
+              <StatCard
+                label="Last 30 days logged"
+                value={formatKgCo2e(last30Total)}
+                suffix={`${activities.length} entr${activities.length === 1 ? "y" : "ies"}`}
+              />
+            </div>
+
+            <div className="mt-6 grid gap-4 lg:grid-cols-3">
+              <div className="lg:col-span-2">
+                <TrendChart activities={activities} days={30} />
+              </div>
+              <CategoryBreakdown activities={activities} />
+            </div>
+
+            <div className="mt-6">
+              <RecentActivity userId={user.id} activities={activities} />
+            </div>
+          </>
         )}
       </section>
     </main>
