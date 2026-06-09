@@ -81,7 +81,9 @@ See `SECURITY.md` for the threat model.
 
 - [x] **Session 1 — Foundation:** Cloud, schema, RLS, auth (email + Google),
       cold-grey theme, landing, protected dashboard skeleton, docs, CI.
-- [ ] **Session 2 — Calculator + onboarding quiz**
+- [x] **Session 2 — Calculator + onboarding quiz:** seeded factors, pure
+      `src/lib/carbon/` (calc + quiz + zod), Vitest (19 tests, 80% threshold),
+      `/onboarding` flow, dashboard baseline stats, blue accent theme.
 - [ ] **Session 3 — Dashboard charts + quick-log sheet**
 - [ ] **Session 4 — AI Coach (streaming)**
 - [ ] **Session 5 — Insights + what-if simulator**
