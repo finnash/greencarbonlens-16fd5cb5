@@ -1,9 +1,18 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Leaf, LogOut } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
+import { useQuery } from "@tanstack/react-query";
+import { Leaf, LogOut, Sparkles } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  GLOBAL_AVG_KG_PER_YEAR,
+  PARIS_BUDGET_KG_PER_YEAR,
+  budgetUsedPct,
+  formatKgCo2e,
+} from "@/lib/carbon";
+import { getMyProfile } from "@/lib/profile.functions";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -19,11 +28,20 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 function Dashboard() {
   const navigate = useNavigate();
   const { user } = Route.useRouteContext();
+  const fetchProfile = useServerFn(getMyProfile);
+  const { data, isLoading } = useQuery({
+    queryKey: ["my-profile", user.id],
+    queryFn: () => fetchProfile(),
+  });
 
   async function signOut() {
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   }
+
+  const profile = data?.profile;
+  const baseline = Number(profile?.baseline_kg_co2e_year ?? 0);
+  const pct = budgetUsedPct(baseline);
 
   return (
     <main id="main-content" className="min-h-dvh bg-background text-foreground">
@@ -51,23 +69,81 @@ function Dashboard() {
       </header>
 
       <section className="mx-auto max-w-6xl px-6 py-10">
-        <h1 className="text-2xl font-semibold tracking-tight">Your dashboard</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">
+          {profile?.display_name ? `Hi, ${profile.display_name}` : "Your dashboard"}
+        </h1>
         <p className="mt-1.5 text-sm text-muted-foreground">
-          Onboarding, activity logging, and AI coach arrive in the next sessions.
+          Your annual carbon footprint at a glance.
         </p>
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <div
-              key={i}
-              className="rounded-xl border border-border/70 bg-card p-5"
-            >
-              <Skeleton className="h-3 w-24" />
-              <Skeleton className="mt-3 h-8 w-32" />
-              <Skeleton className="mt-4 h-2 w-full" />
+
+        {isLoading ? (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {[0, 1, 2].map((i) => (
+              <div key={i} className="rounded-xl border border-border/70 bg-card p-5">
+                <Skeleton className="h-3 w-24" />
+                <Skeleton className="mt-3 h-8 w-32" />
+                <Skeleton className="mt-4 h-2 w-full" />
+              </div>
+            ))}
+          </div>
+        ) : !profile?.onboarding_completed ? (
+          <div className="mt-8 rounded-xl border border-border/70 bg-card p-6">
+            <div className="flex items-start gap-3">
+              <span
+                aria-hidden
+                className="grid size-9 place-items-center rounded-md bg-primary/15 text-primary"
+              >
+                <Sparkles className="size-4" />
+              </span>
+              <div className="flex-1">
+                <h2 className="text-base font-semibold tracking-tight">
+                  Finish onboarding to see your baseline
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Five quick questions — under a minute — to estimate your yearly footprint.
+                </p>
+              </div>
             </div>
-          ))}
-        </div>
+            <div className="mt-4">
+              <Button asChild>
+                <Link to="/onboarding">Start onboarding</Link>
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <StatCard label="Annual baseline" value={formatKgCo2e(baseline)} suffix="CO₂e / yr" />
+            <StatCard
+              label="vs. Paris 1.5 °C budget"
+              value={`${pct}%`}
+              suffix={`of ${formatKgCo2e(PARIS_BUDGET_KG_PER_YEAR)}`}
+            />
+            <StatCard
+              label="vs. global average"
+              value={`${Math.round((baseline / GLOBAL_AVG_KG_PER_YEAR) * 100)}%`}
+              suffix={`of ${formatKgCo2e(GLOBAL_AVG_KG_PER_YEAR)}`}
+            />
+          </div>
+        )}
       </section>
     </main>
+  );
+}
+
+function StatCard({
+  label,
+  value,
+  suffix,
+}: {
+  label: string;
+  value: string;
+  suffix: string;
+}) {
+  return (
+    <div className="rounded-xl border border-border/70 bg-card p-5">
+      <p className="text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
+      <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{value}</p>
+      <p className="mt-1 text-xs text-muted-foreground">{suffix}</p>
+    </div>
   );
 }
