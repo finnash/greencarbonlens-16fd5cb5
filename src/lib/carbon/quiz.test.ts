@@ -27,7 +27,6 @@ describe("quizSchema", () => {
   it("rejects unknown enum values", () => {
     expect(() =>
       quizSchema.parse({
-        // @ts-expect-error runtime safety
         commute: "rocket",
         commute_km_per_day: 10,
         diet: "vegetarian",
