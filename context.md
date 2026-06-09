@@ -84,7 +84,11 @@ See `SECURITY.md` for the threat model.
 - [x] **Session 2 — Calculator + onboarding quiz:** seeded factors, pure
       `src/lib/carbon/` (calc + quiz + zod), Vitest (19 tests, 80% threshold),
       `/onboarding` flow, dashboard baseline stats, blue accent theme.
-- [ ] **Session 3 — Dashboard charts + quick-log sheet**
+- [x] **Session 3 — Dashboard charts + quick-log sheet:** logo + hero banner
+      (Gemini 3 image), Recharts 30-day trend, category breakdown bars,
+      recent-activity list with delete, `QuickLogSheet` with live preview,
+      `activity.functions.ts` (zod-validated log/list/delete + tests),
+      README upgraded to a fully decorated submission cover.
 - [ ] **Session 4 — AI Coach (streaming)**
 - [ ] **Session 5 — Insights + what-if simulator**
 - [ ] **Session 6 — Challenges + leaderboard**
