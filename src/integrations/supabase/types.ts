@@ -296,7 +296,16 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      leaderboard_view: {
+        Row: {
+          completed_count: number | null
+          handle: string | null
+          total_kg_saved: number | null
+          user_id: string | null
+          week_kg_saved: number | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       has_role: {

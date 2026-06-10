@@ -21,7 +21,7 @@ and reduce emissions through simple daily actions and AI-personalized insights._
 
 **Submission · Google PromptWars Virtual Challenge 3 · June 2026**
 
-[Live demo](#) · [Architecture](./ARCHITECTURE.md) · [Security](./SECURITY.md) · [Testing](./TESTING.md) · [Accessibility](./ACCESSIBILITY.md)
+[Live demo](https://greencarbonlens.lovable.app) · [Architecture](./ARCHITECTURE.md) · [Security](./SECURITY.md) · [Testing](./TESTING.md) · [Accessibility](./ACCESSIBILITY.md) · [Decisions](./docs/DECISIONS.md) · [Contributing](./CONTRIBUTING.md)
 
 </div>
 
@@ -290,10 +290,10 @@ supabase/migrations/         # versioned schema (RLS + GRANTs)
 
 - [x] **Session 1** — Foundation: schema, auth, theme, docs, CI
 - [x] **Session 2** — Carbon engine + 5-question onboarding quiz
-- [x] **Session 3** — Dashboard charts + quick activity log _(you are here)_
-- [ ] **Session 4** — AI sustainability coach (streaming Gemini)
-- [ ] **Session 5** — Insights + what-if simulator
-- [ ] **Session 6** — Challenges + anonymous leaderboard
+- [x] **Session 3** — Dashboard charts + quick activity log
+- [x] **Session 4** — AI sustainability coach (streaming Gemini)
+- [x] **Session 5** — Insights + what-if simulator
+- [x] **Session 6** — Challenges + anonymous leaderboard _(you are here)_
 - [ ] **Session 7** — Polish: a11y audit, perf budget, README final
 
 ---
