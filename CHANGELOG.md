@@ -42,6 +42,18 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   aria-live transcript.
 - Dashboard header now links to the Coach when onboarding is complete.
 
+### Added — Session 5 (Insights + What-If)
+- DB: `profiles.quiz_answers jsonb` for re-running the lifestyle model.
+- `src/lib/carbon/simulator.ts` — pure scenario engine
+  (`simulate(answers, levers)`) with 5 unit tests.
+- `src/components/insights/TopFactors.tsx` — ranked emitters bar list.
+- `src/components/insights/Simulator.tsx` — interactive What-If panel
+  (sliders + selects, aria-live result card, delta indicator).
+- `src/routes/_authenticated/insights.tsx` — 90-day analytics page.
+- `getMyProfileFull` server fn (RLS-scoped) returns quiz answers for the
+  simulator without widening the dashboard payload.
+- Dashboard adds an Insights button next to Coach.
+
 ### Added — Session 1 (Foundation)
 - Lovable Cloud enabled with auth (email + Google via managed OAuth broker).
 - Database schema: `profiles`, `user_roles`, `activity_factors`, `activities`,

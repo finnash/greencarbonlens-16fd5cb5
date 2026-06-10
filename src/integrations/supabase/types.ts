@@ -175,6 +175,7 @@ export type Database = {
           handle: string | null
           id: string
           onboarding_completed: boolean
+          quiz_answers: Json | null
           updated_at: string
         }
         Insert: {
@@ -185,6 +186,7 @@ export type Database = {
           handle?: string | null
           id: string
           onboarding_completed?: boolean
+          quiz_answers?: Json | null
           updated_at?: string
         }
         Update: {
@@ -195,6 +197,7 @@ export type Database = {
           handle?: string | null
           id?: string
           onboarding_completed?: boolean
+          quiz_answers?: Json | null
           updated_at?: string
         }
         Relationships: []
