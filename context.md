@@ -89,7 +89,13 @@ See `SECURITY.md` for the threat model.
       recent-activity list with delete, `QuickLogSheet` with live preview,
       `activity.functions.ts` (zod-validated log/list/delete + tests),
       README upgraded to a fully decorated submission cover.
-- [ ] **Session 4 — AI Coach (streaming)**
+- [x] **Session 4 — AI Coach (streaming):** Lovable AI Gateway provider
+      (`ai-gateway.server.ts`), `/api/chat` streaming route with Supabase
+      Bearer auth, 30 msg/hr rate limit via `rate_limits`, grounding prompt
+      from last 30 days of activities + profile baseline, message persistence
+      to `coach_messages` via `onFinish`. `/coach` page using `useChat` +
+      `DefaultChatTransport`, markdown rendering, suggested prompts, clear
+      history, history restore. Coach button added to dashboard header.
 - [ ] **Session 5 — Insights + what-if simulator**
 - [ ] **Session 6 — Challenges + leaderboard**
 - [ ] **Session 7 — Polish, a11y audit, perf, README final**

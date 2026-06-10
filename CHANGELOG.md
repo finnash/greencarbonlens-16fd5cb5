@@ -26,6 +26,22 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   badge row, scoring table, architecture diagram, schema table, layout tree.
 - `src/lib/activity.functions.test.ts` — 6 new Vitest input-schema tests.
 
+### Added — Session 4 (AI Coach)
+- `src/lib/ai-gateway.server.ts` — Lovable AI Gateway provider helper
+  (OpenAI-compatible, run-id propagation).
+- `src/routes/api/chat.ts` — streaming chat route. Verifies Supabase Bearer
+  token, enforces a 30 messages/hour rate limit via the `rate_limits` table,
+  grounds the model in the user's last-30-day activities + profile baseline,
+  and persists both user + assistant messages to `coach_messages` via
+  `onFinish` (streaming preserved).
+- `src/lib/coach.functions.ts` — `getCoachHistory`, `clearCoachHistory`.
+- `src/routes/_authenticated/coach.tsx` — full chat UI with
+  `@ai-sdk/react` `useChat`, `DefaultChatTransport` (attaches Supabase
+  session token), markdown rendering via `react-markdown`, suggested
+  prompts, clear-history action, keyboard send (Enter), accessible
+  aria-live transcript.
+- Dashboard header now links to the Coach when onboarding is complete.
+
 ### Added — Session 1 (Foundation)
 - Lovable Cloud enabled with auth (email + Google via managed OAuth broker).
 - Database schema: `profiles`, `user_roles`, `activity_factors`, `activities`,
