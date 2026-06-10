@@ -26,6 +26,20 @@ export const getMyProfile = createServerFn({ method: "GET" })
     return { profile: data };
   });
 
+/** Read profile + quiz answers (used by the What-If simulator). */
+export const getMyProfileFull = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("id, display_name, baseline_kg_co2e_year, onboarding_completed, quiz_answers")
+      .eq("id", userId)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return { profile: data };
+  });
+
 const completeInput = z.object({
   display_name: z.string().trim().min(1).max(60).optional(),
   answers: quizSchema,
