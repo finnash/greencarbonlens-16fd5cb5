@@ -19,7 +19,7 @@ const BASE: QuizAnswers = {
 describe("simulator — edge cases", () => {
   it("zero baseline activity returns finite zeros, not NaN", () => {
     const empty: QuizAnswers = {
-      commute: "cycling",
+      commute: "bike_walk",
       commute_km_per_day: 0,
       diet: "vegan",
       electricity_kwh_month: 0,
@@ -58,10 +58,10 @@ describe("simulator — edge cases", () => {
     expect(food("low_meat")).toBeLessThanOrEqual(food("high_meat"));
   });
 
-  it("switching commute to cycling zeroes commute emissions even when km > 0", () => {
+  it("switching commute to bike/walk zeroes commute emissions even when km > 0", () => {
     const r = simulate(
       { ...BASE, commute: "car_petrol", commute_km_per_day: 20 },
-      { ...DEFAULT_LEVERS, switchCommuteTo: "cycling" },
+      { ...DEFAULT_LEVERS, switchCommuteTo: "bike_walk" },
     );
     expect(r.byCategory.transport).toBe(0);
   });
@@ -79,7 +79,7 @@ describe("simulator — edge cases", () => {
     const baseline = simulate(BASE, DEFAULT_LEVERS).total;
     const lowest = simulate(BASE, {
       reduceCommutePct: 1,
-      switchCommuteTo: "cycling",
+      switchCommuteTo: "bike_walk",
       renewableSharePct: 1,
       switchDietTo: "vegan",
       flightsLongPerYear: 0,
