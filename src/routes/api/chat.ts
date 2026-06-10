@@ -124,7 +124,7 @@ export const Route = createFileRoute("/api/chat")({
           .slice(0, 8)
           .map((a) => {
             const meta = FACTORS[a.factor_slug as FactorSlug];
-            return `- ${meta?.label ?? a.factor_slug}: ${a.amount} ${a.unit} → ${formatKgCo2e(Number(a.kg_co2e))}`;
+            return `- ${meta?.name ?? a.factor_slug}: ${a.amount} ${a.unit} → ${formatKgCo2e(Number(a.kg_co2e))}`;
           })
           .join("\n");
 
