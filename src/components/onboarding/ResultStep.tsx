@@ -27,9 +27,7 @@ export function ResultStep({
       </p>
 
       <div className="mt-6 rounded-xl border border-border/70 bg-card p-6">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">
-          Annual footprint
-        </p>
+        <p className="text-xs uppercase tracking-wider text-muted-foreground">Annual footprint</p>
         <p className="mt-1 text-3xl font-semibold tracking-tight">
           {formatKgCo2e(estimate.total)}
           <span className="ml-1 text-sm font-normal text-muted-foreground">CO₂e / yr</span>

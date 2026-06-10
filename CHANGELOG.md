@@ -6,6 +6,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 ### Added — Session 6 (Challenges, Leaderboard, code-quality lift)
+
 - `src/lib/challenges.functions.ts` — `listChallenges`, `listMyChallenges`,
   `joinChallenge`, `updateMyChallenge`, `getLeaderboard` (zod-validated,
   RLS-scoped, server-side computed `ends_at`).
@@ -28,6 +29,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   `DEVELOPMENT.md`, `DEPLOYMENT.md`, `DECISIONS.md` (ADRs 0001–0006).
 
 ### Added — Session 3 (Dashboard + Quick Log)
+
 - `src/assets/carbonlens-logo.png` & `carbonlens-banner.png` (Gemini 3 image
   generation) — wired into landing, dashboard, and README cover.
 - `src/lib/activity.functions.ts` — `logActivity`, `listActivities`,
@@ -43,12 +45,13 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `src/components/dashboard/RecentActivity.tsx` — last 10 entries with
   delete + toast.
 - Dashboard route now reads activities via TanStack Query (`["activities",
-  user.id]`) and surfaces "last 30 days logged" stat card.
+user.id]`) and surfaces "last 30 days logged" stat card.
 - README rewritten as a fully decorated submission cover: hero banner,
   badge row, scoring table, architecture diagram, schema table, layout tree.
 - `src/lib/activity.functions.test.ts` — 6 new Vitest input-schema tests.
 
 ### Added — Session 4 (AI Coach)
+
 - `src/lib/ai-gateway.server.ts` — Lovable AI Gateway provider helper
   (OpenAI-compatible, run-id propagation).
 - `src/routes/api/chat.ts` — streaming chat route. Verifies Supabase Bearer
@@ -65,6 +68,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Dashboard header now links to the Coach when onboarding is complete.
 
 ### Added — Session 5 (Insights + What-If)
+
 - DB: `profiles.quiz_answers jsonb` for re-running the lifestyle model.
 - `src/lib/carbon/simulator.ts` — pure scenario engine
   (`simulate(answers, levers)`) with 5 unit tests.
@@ -77,6 +81,7 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Dashboard adds an Insights button next to Coach.
 
 ### Added — Session 1 (Foundation)
+
 - Lovable Cloud enabled with auth (email + Google via managed OAuth broker).
 - Database schema: `profiles`, `user_roles`, `activity_factors`, `activities`,
   `challenges`, `user_challenges`, `coach_messages`, `rate_limits`.

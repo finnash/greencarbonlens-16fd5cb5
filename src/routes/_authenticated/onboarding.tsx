@@ -8,12 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { toast } from "sonner";
 
-import {
-  QUIZ,
-  estimateBaselineKgPerYear,
-  quizSchema,
-  type QuizAnswers,
-} from "@/lib/carbon";
+import { QUIZ, estimateBaselineKgPerYear, quizSchema, type QuizAnswers } from "@/lib/carbon";
 import { completeOnboarding } from "@/lib/profile.functions";
 import { QuestionStep } from "@/components/onboarding/QuestionStep";
 import { ResultStep } from "@/components/onboarding/ResultStep";
@@ -70,10 +65,7 @@ function OnboardingPage() {
   const estimate = estimateBaselineKgPerYear(answers);
 
   return (
-    <main
-      id="main-content"
-      className="min-h-dvh bg-background text-foreground"
-    >
+    <main id="main-content" className="min-h-dvh bg-background text-foreground">
       <div className="mx-auto flex min-h-dvh max-w-xl flex-col px-6 py-8">
         <header className="flex items-center gap-3">
           <span
@@ -83,12 +75,8 @@ function OnboardingPage() {
             <Sparkles className="size-4" />
           </span>
           <div className="flex-1">
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Onboarding
-            </p>
-            <h1 className="text-sm font-semibold tracking-tight">
-              Build your carbon baseline
-            </h1>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">Onboarding</p>
+            <h1 className="text-sm font-semibold tracking-tight">Build your carbon baseline</h1>
           </div>
           <span className="text-xs text-muted-foreground" aria-live="polite">
             {Math.min(step + 1, total + 1)} / {total + 1}
@@ -103,9 +91,7 @@ function OnboardingPage() {
               key={current.key}
               question={current}
               value={answers[current.key]}
-              onChange={(v) =>
-                setAnswers((a) => ({ ...a, [current.key]: v }) as QuizAnswers)
-              }
+              onChange={(v) => setAnswers((a) => ({ ...a, [current.key]: v }) as QuizAnswers)}
             />
           ) : (
             <ResultStep

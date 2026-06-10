@@ -35,19 +35,27 @@ export const DEFAULT_LEVERS: ScenarioLevers = {
 };
 
 function commuteFactor(c: QuizAnswers["commute"]): FactorSlug {
-  return c === "car_petrol" ? "car_petrol_medium"
-    : c === "car_ev" ? "car_ev_medium"
-    : c === "transit" ? "bus_local"
-    : "cycling";
+  return c === "car_petrol"
+    ? "car_petrol_medium"
+    : c === "car_ev"
+      ? "car_ev_medium"
+      : c === "transit"
+        ? "bus_local"
+        : "cycling";
 }
 
 function dietPerYearKg(d: QuizAnswers["diet"]): number {
   switch (d) {
-    case "high_meat": return computeKgCo2e("meal_beef", 365) + computeKgCo2e("meal_chicken", 365);
-    case "low_meat":  return computeKgCo2e("meal_chicken", 365) + computeKgCo2e("meal_vegetarian", 365);
-    case "pescetarian": return computeKgCo2e("meal_fish", 365) + computeKgCo2e("meal_vegetarian", 365);
-    case "vegetarian": return computeKgCo2e("meal_vegetarian", 730);
-    case "vegan": return computeKgCo2e("meal_vegan", 730);
+    case "high_meat":
+      return computeKgCo2e("meal_beef", 365) + computeKgCo2e("meal_chicken", 365);
+    case "low_meat":
+      return computeKgCo2e("meal_chicken", 365) + computeKgCo2e("meal_vegetarian", 365);
+    case "pescetarian":
+      return computeKgCo2e("meal_fish", 365) + computeKgCo2e("meal_vegetarian", 365);
+    case "vegetarian":
+      return computeKgCo2e("meal_vegetarian", 730);
+    case "vegan":
+      return computeKgCo2e("meal_vegan", 730);
   }
 }
 
@@ -71,7 +79,8 @@ export function simulate(answers: QuizAnswers, levers: ScenarioLevers): Scenario
   const diet = levers.switchDietTo === "keep" ? answers.diet : levers.switchDietTo;
   const food = dietPerYearKg(diet);
 
-  const flights = levers.flightsLongPerYear < 0 ? answers.flights_long_per_year : levers.flightsLongPerYear;
+  const flights =
+    levers.flightsLongPerYear < 0 ? answers.flights_long_per_year : levers.flightsLongPerYear;
   const travel = computeKgCo2e("flight_long_eco", Math.max(0, flights) * LONG_HAUL_KM);
 
   const byCategory: Record<ActivityCategory, number> = {

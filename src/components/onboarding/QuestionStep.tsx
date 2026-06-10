@@ -40,9 +40,7 @@ export function QuestionStep({
                 <span>
                   <span className="block text-sm font-medium">{opt.label}</span>
                   {opt.hint ? (
-                    <span className="mt-0.5 block text-xs text-muted-foreground">
-                      {opt.hint}
-                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground">{opt.hint}</span>
                   ) : null}
                 </span>
                 <span

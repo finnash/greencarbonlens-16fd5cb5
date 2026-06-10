@@ -20,7 +20,7 @@ interface Activity {
 }
 
 function labelFor(slug: string): string {
-  return (FACTORS[slug as FactorSlug]?.name) ?? slug;
+  return FACTORS[slug as FactorSlug]?.name ?? slug;
 }
 
 function formatWhen(iso: string): string {
@@ -60,9 +60,7 @@ export function RecentActivity({
       aria-label="Recent activities"
     >
       <div className="border-b border-border/60 px-5 py-4">
-        <p className="text-xs uppercase tracking-wider text-muted-foreground">
-          Recent activity
-        </p>
+        <p className="text-xs uppercase tracking-wider text-muted-foreground">Recent activity</p>
       </div>
       {activities.length === 0 ? (
         <p className="p-5 text-sm text-muted-foreground">

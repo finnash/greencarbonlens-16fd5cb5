@@ -55,10 +55,13 @@ export function estimateBaselineKgPerYear(q: QuizAnswers): {
 } {
   const COMMUTE_DAYS = 240; // ~working days per year
   const commuteFactor: FactorSlug =
-    q.commute === "car_petrol" ? "car_petrol_medium"
-    : q.commute === "car_ev" ? "car_ev_medium"
-    : q.commute === "transit" ? "bus_local"
-    : "cycling";
+    q.commute === "car_petrol"
+      ? "car_petrol_medium"
+      : q.commute === "car_ev"
+        ? "car_ev_medium"
+        : q.commute === "transit"
+          ? "bus_local"
+          : "cycling";
   // Round-trip per commuting day.
   const transport = computeKgCo2e(commuteFactor, q.commute_km_per_day * 2 * COMMUTE_DAYS);
 

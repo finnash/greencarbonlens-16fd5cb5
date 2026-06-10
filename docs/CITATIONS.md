@@ -7,13 +7,13 @@ aggregate math lives in `src/lib/carbon/calculator.ts`.
 
 ## Primary sources
 
-| Source | What we use it for |
-| --- | --- |
+| Source                                                             | What we use it for                                                                                                        |
+| ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
 | **UK DEFRA — Greenhouse gas reporting: conversion factors (2024)** | Default factors for car (petrol/diesel/EV), bus, rail, domestic & international flights, electricity, natural gas, waste. |
-| **IPCC AR6 WGIII (2022)** | Sector-level sanity bounds and the Paris-aligned 1.5 °C personal budget (~2 t CO₂e/yr by 2030). |
-| **Poore & Nemecek, Science (2018)** | Per-meal food factors for beef, chicken, fish, vegetarian, vegan. |
-| **IEA — Electricity Mix & Renewables (2023)** | Renewable-vs-grid sensitivity used by the What-If simulator. |
-| **UN Sustainable Development Goal 13 — Climate Action** | Product North Star; challenges and coach guidance are framed against SDG 13 targets. |
+| **IPCC AR6 WGIII (2022)**                                          | Sector-level sanity bounds and the Paris-aligned 1.5 °C personal budget (~2 t CO₂e/yr by 2030).                           |
+| **Poore & Nemecek, Science (2018)**                                | Per-meal food factors for beef, chicken, fish, vegetarian, vegan.                                                         |
+| **IEA — Electricity Mix & Renewables (2023)**                      | Renewable-vs-grid sensitivity used by the What-If simulator.                                                              |
+| **UN Sustainable Development Goal 13 — Climate Action**            | Product North Star; challenges and coach guidance are framed against SDG 13 targets.                                      |
 
 ## Assumptions
 
@@ -41,8 +41,8 @@ running the relevant function with the user's quiz answers:
 import { estimateBaselineKgPerYear } from "@/lib/carbon/calculator";
 import { simulate, DEFAULT_LEVERS } from "@/lib/carbon/simulator";
 
-estimateBaselineKgPerYear(answers);     // annual baseline (kg CO2e)
-simulate(answers, DEFAULT_LEVERS);      // what-if scenario
+estimateBaselineKgPerYear(answers); // annual baseline (kg CO2e)
+simulate(answers, DEFAULT_LEVERS); // what-if scenario
 ```
 
 Unit tests in `src/lib/carbon/*.test.ts` lock these outputs against

@@ -57,9 +57,7 @@ export function TrendChart({
     >
       <div className="flex items-baseline justify-between">
         <div>
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">
-            Last {days} days
-          </p>
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">Last {days} days</p>
           <p className="mt-1 text-2xl font-semibold tabular-nums">
             {formatKgCo2e(total)}{" "}
             <span className="text-sm font-normal text-muted-foreground">CO₂e</span>

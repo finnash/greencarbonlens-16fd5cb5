@@ -13,14 +13,14 @@ CarbonLens is a personal carbon-footprint tracker. The data we hold is
 lifestyle-adjacent (commute habits, diet category, electricity usage,
 flights per year). It is not regulated PHI/PII but is treated as private.
 
-| Asset                         | Owner    | Exposure                                    |
-| ----------------------------- | -------- | ------------------------------------------- |
-| User profile + quiz answers   | user     | Row-Level Security (RLS) per `auth.uid()`   |
-| Activity log (`activities`)   | user     | RLS per `auth.uid()`                        |
-| Coach chat history            | user     | RLS per `auth.uid()`                        |
-| Challenge progress            | user     | RLS per `auth.uid()`                        |
-| Leaderboard view              | public-ish | SECURITY INVOKER view, handle-only, no email |
-| `LOVABLE_API_KEY`             | platform | Server-only secret, never sent to client    |
+| Asset                       | Owner      | Exposure                                     |
+| --------------------------- | ---------- | -------------------------------------------- |
+| User profile + quiz answers | user       | Row-Level Security (RLS) per `auth.uid()`    |
+| Activity log (`activities`) | user       | RLS per `auth.uid()`                         |
+| Coach chat history          | user       | RLS per `auth.uid()`                         |
+| Challenge progress          | user       | RLS per `auth.uid()`                         |
+| Leaderboard view            | public-ish | SECURITY INVOKER view, handle-only, no email |
+| `LOVABLE_API_KEY`           | platform   | Server-only secret, never sent to client     |
 
 ## Controls
 

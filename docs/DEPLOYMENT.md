@@ -6,10 +6,10 @@ Postgres + Auth + AI Gateway provided by Lovable Cloud.
 
 ## Environments
 
-| Environment | URL pattern | Triggered by |
-|-------------|-------------|--------------|
+| Environment | URL pattern                            | Triggered by             |
+| ----------- | -------------------------------------- | ------------------------ |
 | Preview     | `https://id-preview--<id>.lovable.app` | Every save in the editor |
-| Production  | `https://<slug>.lovable.app` | Manual publish |
+| Production  | `https://<slug>.lovable.app`           | Manual publish           |
 
 The custom domain is not yet configured. Public URL: `https://greencarbonlens.lovable.app`.
 
@@ -32,12 +32,12 @@ previously committed file; add a new one instead.
 All runtime secrets are provided by Lovable Cloud and surfaced as server-side
 `process.env.*` variables. Nothing sensitive is exposed to the browser.
 
-| Key | Where it's used |
-|-----|-----------------|
-| `LOVABLE_API_KEY` | Server-only AI Gateway client (`src/lib/ai-gateway.server.ts`) |
-| `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY` | Server-side Supabase clients |
-| `SUPABASE_SERVICE_ROLE_KEY` | Admin client (server-only, never imported by route files at module scope) |
-| `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` | Browser client (publishable, RLS enforced) |
+| Key                                                   | Where it's used                                                           |
+| ----------------------------------------------------- | ------------------------------------------------------------------------- |
+| `LOVABLE_API_KEY`                                     | Server-only AI Gateway client (`src/lib/ai-gateway.server.ts`)            |
+| `SUPABASE_URL` / `SUPABASE_PUBLISHABLE_KEY`           | Server-side Supabase clients                                              |
+| `SUPABASE_SERVICE_ROLE_KEY`                           | Admin client (server-only, never imported by route files at module scope) |
+| `VITE_SUPABASE_URL` / `VITE_SUPABASE_PUBLISHABLE_KEY` | Browser client (publishable, RLS enforced)                                |
 
 ## Rollback
 

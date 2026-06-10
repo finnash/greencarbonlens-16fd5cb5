@@ -10,9 +10,7 @@ import ReactMarkdown from "react-markdown";
 
 export function MessageBubble({ message }: { message: UIMessage }) {
   const isUser = message.role === "user";
-  const text = message.parts
-    .map((p) => (p.type === "text" ? p.text : ""))
-    .join("");
+  const text = message.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
   return (
     <div className={isUser ? "flex justify-end" : "flex justify-start"}>
       <div

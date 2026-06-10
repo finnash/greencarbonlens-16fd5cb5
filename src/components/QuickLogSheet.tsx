@@ -49,7 +49,7 @@ export function QuickLogSheet({ userId }: { userId: string }) {
   const preview = validAmount ? computeKgCo2e(slug, numericAmount) : 0;
 
   const grouped = useMemo(() => {
-    const out = new Map<string, typeof FACTOR_LIST[number][]>();
+    const out = new Map<string, (typeof FACTOR_LIST)[number][]>();
     for (const f of FACTOR_LIST) {
       const list = out.get(f.category) ?? [];
       list.push(f);
@@ -86,8 +86,7 @@ export function QuickLogSheet({ userId }: { userId: string }) {
         <SheetHeader>
           <SheetTitle>Log an activity</SheetTitle>
           <SheetDescription>
-            Pick what you did, how much, and we'll score it against published emission
-            factors.
+            Pick what you did, how much, and we'll score it against published emission factors.
           </SheetDescription>
         </SheetHeader>
 
@@ -155,10 +154,7 @@ export function QuickLogSheet({ userId }: { userId: string }) {
             />
           </div>
 
-          <div
-            aria-live="polite"
-            className="rounded-lg border border-border/70 bg-card/60 p-4"
-          >
+          <div aria-live="polite" className="rounded-lg border border-border/70 bg-card/60 p-4">
             <p className="text-xs uppercase tracking-wider text-muted-foreground">
               Estimated impact
             </p>
@@ -169,11 +165,7 @@ export function QuickLogSheet({ userId }: { userId: string }) {
           </div>
 
           <SheetFooter>
-            <Button
-              type="submit"
-              disabled={!validAmount || mutation.isPending}
-              className="w-full"
-            >
+            <Button type="submit" disabled={!validAmount || mutation.isPending} className="w-full">
               {mutation.isPending ? (
                 <Loader2 className="size-4 animate-spin" aria-hidden />
               ) : (

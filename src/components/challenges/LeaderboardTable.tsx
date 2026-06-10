@@ -43,10 +43,18 @@ export function LeaderboardTable({
         </caption>
         <thead className="bg-muted/30 text-left text-xs uppercase tracking-wider text-muted-foreground">
           <tr>
-            <th scope="col" className="px-4 py-3">Rank</th>
-            <th scope="col" className="px-4 py-3">Member</th>
-            <th scope="col" className="px-4 py-3 text-right">Saved</th>
-            <th scope="col" className="hidden px-4 py-3 text-right sm:table-cell">Completed</th>
+            <th scope="col" className="px-4 py-3">
+              Rank
+            </th>
+            <th scope="col" className="px-4 py-3">
+              Member
+            </th>
+            <th scope="col" className="px-4 py-3 text-right">
+              Saved
+            </th>
+            <th scope="col" className="hidden px-4 py-3 text-right sm:table-cell">
+              Completed
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -62,8 +70,8 @@ export function LeaderboardTable({
               >
                 <td className="px-4 py-3 tabular-nums">
                   <span className="inline-flex items-center gap-1.5">
-                    {idx === 0 ? <Crown className="size-4 text-amber-400" aria-hidden /> : null}
-                    #{idx + 1}
+                    {idx === 0 ? <Crown className="size-4 text-amber-400" aria-hidden /> : null}#
+                    {idx + 1}
                   </span>
                 </td>
                 <td className="px-4 py-3">

@@ -61,13 +61,12 @@ function Landing() {
           Built for PromptWars Virtual Challenge 3
         </div>
         <h1 className="mt-6 max-w-3xl text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-          See your carbon footprint.{" "}
-          <span className="text-primary">Shrink it on autopilot.</span>
+          See your carbon footprint. <span className="text-primary">Shrink it on autopilot.</span>
         </h1>
         <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-          CarbonLens turns everyday actions — driving, eating, heating, shopping — into
-          clear, science-backed CO₂e numbers. An AI sustainability coach reads your
-          patterns and gives you the next best move to cut emissions.
+          CarbonLens turns everyday actions — driving, eating, heating, shopping — into clear,
+          science-backed CO₂e numbers. An AI sustainability coach reads your patterns and gives you
+          the next best move to cut emissions.
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-3">
           <Link
@@ -97,10 +96,7 @@ function Landing() {
           <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
             Five connected surfaces, one goal: measurable reductions.
           </p>
-          <ul
-            role="list"
-            className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-          >
+          <ul role="list" className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f) => (
               <li
                 key={f.title}
@@ -113,9 +109,7 @@ function Landing() {
                   <f.icon className="size-4" />
                 </div>
                 <h3 className="mt-4 text-sm font-semibold tracking-tight">{f.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-                  {f.body}
-                </p>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{f.body}</p>
               </li>
             ))}
           </ul>
@@ -125,10 +119,7 @@ function Landing() {
       <footer className="border-t border-border/60">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-3 px-6 py-8 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <p>© {new Date().getFullYear()} CarbonLens. Open-source MIT.</p>
-          <p>
-            Emission factors: DEFRA / EPA / IPCC AR6. Educational tool, not a certified
-            audit.
-          </p>
+          <p>Emission factors: DEFRA / EPA / IPCC AR6. Educational tool, not a certified audit.</p>
         </div>
       </footer>
     </main>

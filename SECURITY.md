@@ -2,13 +2,13 @@
 
 ## Threat model (summary)
 
-| Asset | Threat | Mitigation |
-|---|---|---|
-| User activity logs | Cross-user read/write | RLS policies scope every query to `auth.uid()`. |
-| Auth roles | Privilege escalation via client-tampered profile | Roles live in a separate `user_roles` table; `has_role()` is `SECURITY DEFINER`. |
-| AI coach endpoint | Abuse / cost explosion | Per-user `rate_limits` table enforced server-side. |
-| Service-role key | Leak via client bundle | Only ever read inside `createServerFn` / server routes. The `client.server.ts` module is excluded from client bundles. |
-| Webhook endpoints | Forged calls | Every `/api/public/*` handler verifies a signature before any write. |
+| Asset              | Threat                                           | Mitigation                                                                                                             |
+| ------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------- |
+| User activity logs | Cross-user read/write                            | RLS policies scope every query to `auth.uid()`.                                                                        |
+| Auth roles         | Privilege escalation via client-tampered profile | Roles live in a separate `user_roles` table; `has_role()` is `SECURITY DEFINER`.                                       |
+| AI coach endpoint  | Abuse / cost explosion                           | Per-user `rate_limits` table enforced server-side.                                                                     |
+| Service-role key   | Leak via client bundle                           | Only ever read inside `createServerFn` / server routes. The `client.server.ts` module is excluded from client bundles. |
+| Webhook endpoints  | Forged calls                                     | Every `/api/public/*` handler verifies a signature before any write.                                                   |
 
 ## Row-level security
 

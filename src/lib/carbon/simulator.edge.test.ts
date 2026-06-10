@@ -90,10 +90,7 @@ describe("simulator — edge cases", () => {
   it("totals equal the sum of category values", () => {
     const r = simulate(BASE, DEFAULT_LEVERS);
     const sum =
-      r.byCategory.transport +
-      r.byCategory.energy +
-      r.byCategory.food +
-      r.byCategory.travel;
+      r.byCategory.transport + r.byCategory.energy + r.byCategory.food + r.byCategory.travel;
     expect(Math.abs(r.total - sum)).toBeLessThan(0.05);
   });
 

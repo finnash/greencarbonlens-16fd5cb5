@@ -23,10 +23,7 @@ export const clearCoachHistory = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
-    const { error } = await supabase
-      .from("coach_messages")
-      .delete()
-      .eq("user_id", userId);
+    const { error } = await supabase.from("coach_messages").delete().eq("user_id", userId);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

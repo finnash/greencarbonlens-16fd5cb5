@@ -84,9 +84,9 @@
   --success: oklch(0.74 0.13 232);
   --border: oklch(0.27 0.01 250);
   --input: oklch(0.24 0.01 250);
-  --ring: oklch(0.60 0.10 232);
+  --ring: oklch(0.6 0.1 232);
   --chart-1: oklch(0.74 0.13 232);
-  --chart-2: oklch(0.70 0.11 260);
+  --chart-2: oklch(0.7 0.11 260);
   --chart-3: oklch(0.78 0.16 75);
   --chart-4: oklch(0.66 0.21 25);
   --chart-5: oklch(0.72 0.08 285);
@@ -97,7 +97,7 @@
   --sidebar-accent: oklch(0.24 0.01 250);
   --sidebar-accent-foreground: oklch(0.96 0.005 250);
   --sidebar-border: oklch(0.27 0.01 250);
-  --sidebar-ring: oklch(0.60 0.10 232);
+  --sidebar-ring: oklch(0.6 0.1 232);
 }
 
 .dark {
@@ -120,9 +120,9 @@
   --destructive-foreground: oklch(0.98 0.005 250);
   --border: oklch(0.27 0.01 250);
   --input: oklch(0.24 0.01 250);
-  --ring: oklch(0.60 0.10 232);
+  --ring: oklch(0.6 0.1 232);
   --chart-1: oklch(0.74 0.13 232);
-  --chart-2: oklch(0.70 0.11 260);
+  --chart-2: oklch(0.7 0.11 260);
   --chart-3: oklch(0.78 0.16 75);
   --chart-4: oklch(0.66 0.21 25);
   --chart-5: oklch(0.72 0.08 285);
@@ -133,7 +133,7 @@
   --sidebar-accent: oklch(0.24 0.01 250);
   --sidebar-accent-foreground: oklch(0.96 0.005 250);
   --sidebar-border: oklch(0.27 0.01 250);
-  --sidebar-ring: oklch(0.60 0.10 232);
+  --sidebar-ring: oklch(0.6 0.1 232);
 }
 
 @layer base {
@@ -170,7 +170,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }

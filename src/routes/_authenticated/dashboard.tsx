@@ -107,9 +107,7 @@ function Dashboard() {
                 </Link>
               </Button>
             ) : null}
-            <span className="hidden text-xs text-muted-foreground sm:inline">
-              {user.email}
-            </span>
+            <span className="hidden text-xs text-muted-foreground sm:inline">{user.email}</span>
             <Button variant="ghost" size="sm" onClick={signOut} aria-label="Sign out">
               <LogOut className="size-4" />
               <span className="hidden sm:inline">Sign out</span>

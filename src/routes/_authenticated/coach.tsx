@@ -22,7 +22,8 @@ export const Route = createFileRoute("/_authenticated/coach")({
       { title: "AI Coach · CarbonLens" },
       {
         name: "description",
-        content: "Chat with your CarbonLens AI Coach for personalized footprint advice grounded in your real activity log.",
+        content:
+          "Chat with your CarbonLens AI Coach for personalized footprint advice grounded in your real activity log.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -117,7 +118,14 @@ function CoachPage() {
             >
               <ArrowLeft className="size-4" />
             </Button>
-            <img src={logoUrl} alt="" aria-hidden width={28} height={28} className="size-7 rounded" />
+            <img
+              src={logoUrl}
+              alt=""
+              aria-hidden
+              width={28}
+              height={28}
+              className="size-7 rounded"
+            />
             <div>
               <p className="text-sm font-semibold tracking-tight">AI Coach</p>
               <p className="text-[11px] text-muted-foreground">Grounded in your last 30 days</p>
@@ -158,9 +166,7 @@ function CoachPage() {
               Coach is thinking…
             </div>
           ) : null}
-          {error ? (
-            <p className="text-xs text-destructive">{error.message}</p>
-          ) : null}
+          {error ? <p className="text-xs text-destructive">{error.message}</p> : null}
           <div ref={endRef} />
         </div>
 
