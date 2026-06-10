@@ -283,6 +283,18 @@ supabase/migrations/         # versioned schema (RLS + GRANTs)
 | [`TESTING.md`](./TESTING.md) | Test pyramid, coverage gates, CI workflow |
 | [`ACCESSIBILITY.md`](./ACCESSIBILITY.md) | WCAG AA conformance checklist |
 | [`CHANGELOG.md`](./CHANGELOG.md) | Session-by-session shipped milestones |
+| [`docs/CITATIONS.md`](./docs/CITATIONS.md) | DEFRA 2024 · IPCC AR6 · IEA · Poore & Nemecek · SDG 13 alignment |
+| [`docs/SECURITY.md`](./docs/SECURITY.md) | Reporting policy + threat model |
+| [`docs/DECISIONS.md`](./docs/DECISIONS.md) | Architecture Decision Records (ADRs) |
+
+### Problem-statement alignment
+
+CarbonLens directly addresses **UN Sustainable Development Goal 13 — Climate
+Action** at the individual level. The product loop — *measure → understand →
+act → reinforce* — mirrors the IPCC AR6 mitigation framing applied to
+per-capita lifestyle emissions. The Paris-aligned 2 t CO₂e/yr personal
+budget surfaced on the dashboard comes from **IPCC AR6 WGIII Chapter 5**;
+every emission factor cites its origin in [`docs/CITATIONS.md`](./docs/CITATIONS.md).
 
 ---
 
