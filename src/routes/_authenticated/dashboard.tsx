@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { LogOut, Sparkles } from "lucide-react";
+import { LogOut, MessageSquareText, Sparkles } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -74,6 +74,14 @@ function Dashboard() {
           </div>
           <div className="flex items-center gap-2">
             {profile?.onboarding_completed ? <QuickLogSheet userId={user.id} /> : null}
+            {profile?.onboarding_completed ? (
+              <Button asChild variant="outline" size="sm">
+                <Link to="/coach" aria-label="Open AI Coach">
+                  <MessageSquareText className="size-4" />
+                  <span className="hidden sm:inline">Coach</span>
+                </Link>
+              </Button>
+            ) : null}
             <span className="hidden text-xs text-muted-foreground sm:inline">
               {user.email}
             </span>
