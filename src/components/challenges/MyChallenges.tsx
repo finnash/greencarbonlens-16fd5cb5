@@ -7,6 +7,12 @@ import { updateMyChallenge, type UserChallengeRow, type ChallengeRow } from "@/l
 import { toast } from "sonner";
 import { formatKgCo2e } from "@/lib/carbon";
 
+type UpdateInput = {
+  user_challenge_id: string;
+  status: "active" | "completed" | "abandoned";
+  kg_co2e_saved?: number;
+};
+
 /**
  * Lists the user's joined challenges with complete / abandon controls.
  */
@@ -20,7 +26,7 @@ export function MyChallenges({
   const qc = useQueryClient();
   const upd = useServerFn(updateMyChallenge);
   const m = useMutation({
-    mutationFn: (args: Parameters<typeof updateMyChallenge>[0]["data"]) => upd({ data: args }),
+    mutationFn: (args: UpdateInput) => upd({ data: args }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["my-challenges"] });
       qc.invalidateQueries({ queryKey: ["leaderboard"] });
