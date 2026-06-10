@@ -4,7 +4,13 @@ import { ArrowDown, ArrowUp, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { formatKgCo2e } from "@/lib/carbon/calculator";
 import { DEFAULT_LEVERS, simulate, type ScenarioLevers } from "@/lib/carbon/simulator";
 import type { QuizAnswers } from "@/lib/carbon/types";
@@ -54,25 +60,30 @@ export function Simulator({ answers, baseline }: Props) {
         aria-live="polite"
       >
         <div className="flex items-baseline justify-between">
-          <p className="text-xs uppercase tracking-wider text-muted-foreground">
-            Projected annual
-          </p>
+          <p className="text-xs uppercase tracking-wider text-muted-foreground">Projected annual</p>
           <p
             className={
               "flex items-center gap-1 text-xs font-medium " +
-              (delta < 0 ? "text-primary" : delta > 0 ? "text-destructive" : "text-muted-foreground")
+              (delta < 0
+                ? "text-primary"
+                : delta > 0
+                  ? "text-destructive"
+                  : "text-muted-foreground")
             }
           >
-            {delta < 0 ? <ArrowDown className="size-3" /> : delta > 0 ? <ArrowUp className="size-3" /> : null}
-            {pct > 0 ? "+" : ""}{pct}% ({formatKgCo2e(Math.abs(delta))})
+            {delta < 0 ? (
+              <ArrowDown className="size-3" />
+            ) : delta > 0 ? (
+              <ArrowUp className="size-3" />
+            ) : null}
+            {pct > 0 ? "+" : ""}
+            {pct}% ({formatKgCo2e(Math.abs(delta))})
           </p>
         </div>
         <p className="mt-1 text-3xl font-semibold tabular-nums tracking-tight">
           {formatKgCo2e(result.total)}
         </p>
-        <p className="text-[11px] text-muted-foreground">
-          vs. baseline {formatKgCo2e(baseline)}
-        </p>
+        <p className="text-[11px] text-muted-foreground">vs. baseline {formatKgCo2e(baseline)}</p>
       </div>
 
       <div className="mt-6 space-y-6">
@@ -189,7 +200,13 @@ function SliderRow({
 }
 
 function labelCommute(c: QuizAnswers["commute"]) {
-  return c === "car_petrol" ? "petrol car" : c === "car_ev" ? "EV" : c === "transit" ? "transit" : "bike/walk";
+  return c === "car_petrol"
+    ? "petrol car"
+    : c === "car_ev"
+      ? "EV"
+      : c === "transit"
+        ? "transit"
+        : "bike/walk";
 }
 function labelDiet(d: QuizAnswers["diet"]) {
   return d.replace("_", " ");

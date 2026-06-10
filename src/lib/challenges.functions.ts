@@ -50,7 +50,9 @@ export const listChallenges = createServerFn({ method: "GET" })
     const { supabase } = context;
     const { data, error } = await supabase
       .from("challenges")
-      .select("id, slug, title, description, category, duration_days, expected_kg_co2e_saved, difficulty")
+      .select(
+        "id, slug, title, description, category, duration_days, expected_kg_co2e_saved, difficulty",
+      )
       .eq("is_active", true)
       .order("difficulty", { ascending: true });
     if (error) {

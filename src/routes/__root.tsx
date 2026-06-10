@@ -79,10 +79,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "CarbonLens — Track, understand, and shrink your carbon footprint" },
-      { name: "description", content: "A personal carbon footprint platform with an AI sustainability coach, smart logging, and reduction challenges." },
+      {
+        name: "description",
+        content:
+          "A personal carbon footprint platform with an AI sustainability coach, smart logging, and reduction challenges.",
+      },
       { name: "theme-color", content: "#1a1f24" },
+      {
+        httpEquiv: "Content-Security-Policy",
+        content:
+          "default-src 'self'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.lovable.app https://*.lovable.dev; font-src 'self' data:; frame-ancestors 'self'; base-uri 'self'; form-action 'self'",
+      },
+      { name: "referrer", content: "strict-origin-when-cross-origin" },
       { property: "og:title", content: "CarbonLens — Personal carbon footprint coach" },
-      { property: "og:description", content: "Understand, track, and reduce your carbon footprint with simple actions and an AI coach." },
+      {
+        property: "og:description",
+        content:
+          "Understand, track, and reduce your carbon footprint with simple actions and an AI coach.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -106,7 +120,9 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <a href="#main-content" className="skip-link">Skip to main content</a>
+        <a href="#main-content" className="skip-link">
+          Skip to main content
+        </a>
         {children}
         <Scripts />
       </body>

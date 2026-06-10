@@ -30,7 +30,9 @@ function ChallengesPage() {
   const mine = useQuery({ queryKey: ["my-challenges", user.id], queryFn: () => listMine() });
 
   const catalog = cat.data?.challenges ?? [];
-  const joinedIds = new Set((mine.data?.entries ?? []).filter((e) => e.status === "active").map((e) => e.challenge_id));
+  const joinedIds = new Set(
+    (mine.data?.entries ?? []).filter((e) => e.status === "active").map((e) => e.challenge_id),
+  );
 
   return (
     <main id="main-content" className="min-h-dvh bg-background text-foreground">

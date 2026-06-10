@@ -51,12 +51,18 @@ describe("sumEmissions / breakdownByCategory", () => {
 describe("estimateBaselineKgPerYear", () => {
   it("eco profile beats heavy profile", () => {
     const eco = estimateBaselineKgPerYear({
-      commute: "bike_walk", commute_km_per_day: 5, diet: "vegan",
-      electricity_kwh_month: 150, flights_long_per_year: 0,
+      commute: "bike_walk",
+      commute_km_per_day: 5,
+      diet: "vegan",
+      electricity_kwh_month: 150,
+      flights_long_per_year: 0,
     });
     const heavy = estimateBaselineKgPerYear({
-      commute: "car_petrol", commute_km_per_day: 30, diet: "high_meat",
-      electricity_kwh_month: 600, flights_long_per_year: 2,
+      commute: "car_petrol",
+      commute_km_per_day: 30,
+      diet: "high_meat",
+      electricity_kwh_month: 600,
+      flights_long_per_year: 2,
     });
     expect(eco.total).toBeLessThan(heavy.total);
     expect(eco.byCategory.transport).toBe(0);
@@ -64,8 +70,11 @@ describe("estimateBaselineKgPerYear", () => {
   });
   it("produces a finite total", () => {
     const out = estimateBaselineKgPerYear({
-      commute: "transit", commute_km_per_day: 12, diet: "low_meat",
-      electricity_kwh_month: 280, flights_long_per_year: 1,
+      commute: "transit",
+      commute_km_per_day: 12,
+      diet: "low_meat",
+      electricity_kwh_month: 280,
+      flights_long_per_year: 1,
     });
     expect(Number.isFinite(out.total)).toBe(true);
     expect(out.total).toBeGreaterThan(0);

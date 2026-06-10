@@ -4,8 +4,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, Send, Sparkles, Trash2 } from "lucide-react";
-import ReactMarkdown from "react-markdown";
+import { ArrowLeft, Send, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
@@ -13,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getCoachHistory, clearCoachHistory } from "@/lib/coach.functions";
+import { MessageBubble } from "@/components/coach/MessageBubble";
+import { CoachEmptyState } from "@/components/coach/EmptyState";
 import logoUrl from "@/assets/carbonlens-logo.png";
 
 export const Route = createFileRoute("/_authenticated/coach")({
@@ -21,20 +22,14 @@ export const Route = createFileRoute("/_authenticated/coach")({
       { title: "AI Coach · CarbonLens" },
       {
         name: "description",
-        content: "Chat with your CarbonLens AI Coach for personalized footprint advice grounded in your real activity log.",
+        content:
+          "Chat with your CarbonLens AI Coach for personalized footprint advice grounded in your real activity log.",
       },
       { name: "robots", content: "noindex" },
     ],
   }),
   component: CoachPage,
 });
-
-const SUGGESTED = [
-  "What's my biggest emission source right now?",
-  "Give me 3 actions to cut my footprint this week.",
-  "How do I compare to the Paris 1.5 °C budget?",
-  "Is flying or driving worse per km?",
-];
 
 function CoachPage() {
   const navigate = useNavigate();
@@ -123,7 +118,14 @@ function CoachPage() {
             >
               <ArrowLeft className="size-4" />
             </Button>
-            <img src={logoUrl} alt="" aria-hidden width={28} height={28} className="size-7 rounded" />
+            <img
+              src={logoUrl}
+              alt=""
+              aria-hidden
+              width={28}
+              height={28}
+              className="size-7 rounded"
+            />
             <div>
               <p className="text-sm font-semibold tracking-tight">AI Coach</p>
               <p className="text-[11px] text-muted-foreground">Grounded in your last 30 days</p>
@@ -154,7 +156,7 @@ function CoachPage() {
               <Skeleton className="ml-auto h-12 w-1/2" />
             </div>
           ) : messages.length === 0 ? (
-            <EmptyState onPick={send} />
+            <CoachEmptyState onPick={send} />
           ) : (
             messages.map((m) => <MessageBubble key={m.id} message={m} />)
           )}
@@ -164,9 +166,7 @@ function CoachPage() {
               Coach is thinking…
             </div>
           ) : null}
-          {error ? (
-            <p className="text-xs text-destructive">{error.message}</p>
-          ) : null}
+          {error ? <p className="text-xs text-destructive">{error.message}</p> : null}
           <div ref={endRef} />
         </div>
 
@@ -207,57 +207,5 @@ function CoachPage() {
         </p>
       </section>
     </main>
-  );
-}
-
-function EmptyState({ onPick }: { onPick: (q: string) => void }) {
-  return (
-    <div className="rounded-xl border border-border/70 bg-card p-6">
-      <div className="flex items-center gap-2 text-sm font-semibold tracking-tight">
-        <Sparkles className="size-4 text-primary" />
-        Start a conversation
-      </div>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Your coach knows your last 30 days of activity. Try one of these to begin:
-      </p>
-      <div className="mt-4 grid gap-2 sm:grid-cols-2">
-        {SUGGESTED.map((q) => (
-          <button
-            key={q}
-            type="button"
-            onClick={() => onPick(q)}
-            className="rounded-md border border-border/70 bg-background px-3 py-2 text-left text-sm text-foreground transition-colors hover:border-primary/50 hover:bg-accent"
-          >
-            {q}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MessageBubble({ message }: { message: UIMessage }) {
-  const isUser = message.role === "user";
-  const text = message.parts
-    .map((p) => (p.type === "text" ? p.text : ""))
-    .join("");
-  return (
-    <div className={isUser ? "flex justify-end" : "flex justify-start"}>
-      <div
-        className={
-          isUser
-            ? "max-w-[85%] rounded-2xl rounded-br-sm bg-primary px-3.5 py-2 text-sm text-primary-foreground"
-            : "max-w-[85%] rounded-2xl rounded-bl-sm border border-border/70 bg-card px-3.5 py-2 text-sm text-foreground"
-        }
-      >
-        {isUser ? (
-          <p className="whitespace-pre-wrap">{text}</p>
-        ) : (
-          <div className="prose prose-sm prose-invert max-w-none prose-p:my-1.5 prose-ul:my-1.5 prose-strong:text-foreground">
-            <ReactMarkdown>{text}</ReactMarkdown>
-          </div>
-        )}
-      </div>
-    </div>
   );
 }

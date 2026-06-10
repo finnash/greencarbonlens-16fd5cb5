@@ -3,7 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 
 import { Button } from "@/components/ui/button";
-import { updateMyChallenge, type UserChallengeRow, type ChallengeRow } from "@/lib/challenges.functions";
+import {
+  updateMyChallenge,
+  type UserChallengeRow,
+  type ChallengeRow,
+} from "@/lib/challenges.functions";
 import { toast } from "sonner";
 import { formatKgCo2e } from "@/lib/carbon";
 
@@ -58,7 +62,8 @@ export function MyChallenges({
             <div>
               <p className="text-sm font-medium">{ch.title}</p>
               <p className="text-xs text-muted-foreground">
-                {remaining} day{remaining === 1 ? "" : "s"} left · {formatKgCo2e(Number(e.kg_co2e_saved))} saved
+                {remaining} day{remaining === 1 ? "" : "s"} left ·{" "}
+                {formatKgCo2e(Number(e.kg_co2e_saved))} saved
               </p>
             </div>
             <div className="flex gap-2">

@@ -21,7 +21,7 @@ and reduce emissions through simple daily actions and AI-personalized insights._
 
 **Submission · Google PromptWars Virtual Challenge 3 · June 2026**
 
-[Live demo](https://greencarbonlens.lovable.app) · [Architecture](./ARCHITECTURE.md) · [Security](./SECURITY.md) · [Testing](./TESTING.md) · [Accessibility](./ACCESSIBILITY.md) · [Decisions](./docs/DECISIONS.md) · [Contributing](./CONTRIBUTING.md)
+[Live demo](https://greencarbonlens.lovable.app) · [Architecture](./ARCHITECTURE.md) · [Security](./docs/SECURITY.md) · [Testing](./TESTING.md) · [Accessibility](./ACCESSIBILITY.md) · [Methodology](./docs/CITATIONS.md) · [Decisions](./docs/DECISIONS.md) · [Contributing](./CONTRIBUTING.md)
 
 </div>
 
@@ -84,11 +84,13 @@ features grow inside that frame.
 <td width="50%" valign="top">
 
 ### 🌿 Onboarding quiz
+
 5 questions → a science-backed kg CO₂e / year baseline using DEFRA / EPA /
 IEA factors. Pure deterministic math in `src/lib/carbon/` — unit-tested,
 fully type-safe, no network round-trip.
 
 ### 📊 Live dashboard
+
 Annual baseline vs. the **Paris 1.5 °C personal budget** (2 t CO₂e/yr,
 IPCC AR6) and the global per-capita average. 30-day trend area chart,
 category breakdown, and a deletable recent-activity list.
@@ -97,11 +99,13 @@ category breakdown, and a deletable recent-activity list.
 <td width="50%" valign="top">
 
 ### ⚡ Quick activity log
+
 One-sheet entry for transport, energy, food, travel, shopping, waste. Live
 kg CO₂e preview as you type. Server re-computes from the trusted factor
 table so the client can never inflate or fake a value.
 
 ### 🤖 AI sustainability coach _(next)_
+
 Lovable AI Gateway → Gemini Flash, scoped to the user's last 30 days of
 activity. Rate-limited server-side (20 calls/hour/user) via a `rate_limits`
 table — no client trust required.
@@ -203,16 +207,16 @@ See [`ARCHITECTURE.md`](./ARCHITECTURE.md) for the long version.
 
 ## Database schema
 
-| Table | Purpose | RLS |
-|---|---|---|
-| `profiles` | 1:1 with `auth.users`, auto-created via `handle_new_user` trigger | own-row R/W |
-| `user_roles` | Roles in a **separate** table (anti-privilege-escalation) | own-row R |
-| `activity_factors` | Seeded emission-factor catalogue | public R |
-| `activities` | Per-user activity log with computed `kg_co2e` | own-row R/W/D |
-| `challenges` | Public reduction-challenge templates | public R |
-| `user_challenges` | Per-user challenge state | own-row R/W |
-| `coach_messages` | AI chat history | own-row R, server W |
-| `rate_limits` | Server-only throttling | no policy by design |
+| Table              | Purpose                                                           | RLS                 |
+| ------------------ | ----------------------------------------------------------------- | ------------------- |
+| `profiles`         | 1:1 with `auth.users`, auto-created via `handle_new_user` trigger | own-row R/W         |
+| `user_roles`       | Roles in a **separate** table (anti-privilege-escalation)         | own-row R           |
+| `activity_factors` | Seeded emission-factor catalogue                                  | public R            |
+| `activities`       | Per-user activity log with computed `kg_co2e`                     | own-row R/W/D       |
+| `challenges`       | Public reduction-challenge templates                              | public R            |
+| `user_challenges`  | Per-user challenge state                                          | own-row R/W         |
+| `coach_messages`   | AI chat history                                                   | own-row R, server W |
+| `rate_limits`      | Server-only throttling                                            | no policy by design |
 
 Every table ships with an explicit `GRANT` block in the same migration that
 creates it — RLS alone isn't enough for the Supabase Data API.
@@ -275,14 +279,26 @@ supabase/migrations/         # versioned schema (RLS + GRANTs)
 
 ## Documentation
 
-| File | What's in it |
-|---|---|
-| [`context.md`](./context.md) | Single source of truth — scope, scoring rationale, build phases |
-| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | System diagram, data flow, key trade-offs |
-| [`SECURITY.md`](./SECURITY.md) | Threat model, RLS policies, rate-limit design |
-| [`TESTING.md`](./TESTING.md) | Test pyramid, coverage gates, CI workflow |
-| [`ACCESSIBILITY.md`](./ACCESSIBILITY.md) | WCAG AA conformance checklist |
-| [`CHANGELOG.md`](./CHANGELOG.md) | Session-by-session shipped milestones |
+| File                                       | What's in it                                                     |
+| ------------------------------------------ | ---------------------------------------------------------------- |
+| [`context.md`](./context.md)               | Single source of truth — scope, scoring rationale, build phases  |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md)     | System diagram, data flow, key trade-offs                        |
+| [`SECURITY.md`](./SECURITY.md)             | Threat model, RLS policies, rate-limit design                    |
+| [`TESTING.md`](./TESTING.md)               | Test pyramid, coverage gates, CI workflow                        |
+| [`ACCESSIBILITY.md`](./ACCESSIBILITY.md)   | WCAG AA conformance checklist                                    |
+| [`CHANGELOG.md`](./CHANGELOG.md)           | Session-by-session shipped milestones                            |
+| [`docs/CITATIONS.md`](./docs/CITATIONS.md) | DEFRA 2024 · IPCC AR6 · IEA · Poore & Nemecek · SDG 13 alignment |
+| [`docs/SECURITY.md`](./docs/SECURITY.md)   | Reporting policy + threat model                                  |
+| [`docs/DECISIONS.md`](./docs/DECISIONS.md) | Architecture Decision Records (ADRs)                             |
+
+### Problem-statement alignment
+
+CarbonLens directly addresses **UN Sustainable Development Goal 13 — Climate
+Action** at the individual level. The product loop — _measure → understand →
+act → reinforce_ — mirrors the IPCC AR6 mitigation framing applied to
+per-capita lifestyle emissions. The Paris-aligned 2 t CO₂e/yr personal
+budget surfaced on the dashboard comes from **IPCC AR6 WGIII Chapter 5**;
+every emission factor cites its origin in [`docs/CITATIONS.md`](./docs/CITATIONS.md).
 
 ---
 

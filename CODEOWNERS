@@ -1,0 +1,13 @@
+# CarbonLens code owners
+#
+# These owners are the default reviewers for everything in the repository.
+# More specific rules below override the global one. See:
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+*               @carbonlens/maintainers
+
+# Carbon math is safety-critical; require domain reviewer.
+/src/lib/carbon/   @carbonlens/carbon-math
+/supabase/         @carbonlens/platform
+/.github/          @carbonlens/platform
+/docs/             @carbonlens/maintainers

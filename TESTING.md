@@ -2,12 +2,12 @@
 
 ## What we test (target by milestone)
 
-| Layer | Tool | Target coverage |
-|---|---|---|
-| Pure-TS carbon engine (`src/lib/carbon/`) | Vitest | ≥ 80 % lines |
-| Server functions (`*.functions.ts`) | Vitest + mocked Supabase | All happy paths + auth-failure path |
-| Critical UI flows (auth, log, coach) | React Testing Library | Render + key interactions |
-| End-to-end smoke (auth → log → dashboard) | Playwright | 1 happy-path per release |
+| Layer                                     | Tool                     | Target coverage                     |
+| ----------------------------------------- | ------------------------ | ----------------------------------- |
+| Pure-TS carbon engine (`src/lib/carbon/`) | Vitest                   | ≥ 80 % lines                        |
+| Server functions (`*.functions.ts`)       | Vitest + mocked Supabase | All happy paths + auth-failure path |
+| Critical UI flows (auth, log, coach)      | React Testing Library    | Render + key interactions           |
+| End-to-end smoke (auth → log → dashboard) | Playwright               | 1 happy-path per release            |
 
 ## Running tests
 

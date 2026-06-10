@@ -14,7 +14,10 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in · CarbonLens" },
-      { name: "description", content: "Sign in to CarbonLens to track and reduce your carbon footprint." },
+      {
+        name: "description",
+        content: "Sign in to CarbonLens to track and reduce your carbon footprint.",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -92,10 +95,7 @@ function AuthPage() {
   }
 
   return (
-    <main
-      id="main-content"
-      className="grid min-h-dvh place-items-center bg-background px-4 py-12"
-    >
+    <main id="main-content" className="grid min-h-dvh place-items-center bg-background px-4 py-12">
       <div className="w-full max-w-sm">
         <div className="mb-8 flex items-center gap-2 text-sm font-semibold tracking-tight">
           <span

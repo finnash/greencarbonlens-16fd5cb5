@@ -73,17 +73,15 @@ export const Route = createFileRoute("/api/chat")({
         if (current >= RATE_LIMIT_PER_HOUR) {
           return new Response("Rate limit reached. Try again next hour.", { status: 429 });
         }
-        await supabase
-          .from("rate_limits")
-          .upsert(
-            {
-              user_id: userId,
-              bucket: "coach_chat",
-              window_start: winIso,
-              count: current + 1,
-            },
-            { onConflict: "user_id,bucket,window_start" },
-          );
+        await supabase.from("rate_limits").upsert(
+          {
+            user_id: userId,
+            bucket: "coach_chat",
+            window_start: winIso,
+            count: current + 1,
+          },
+          { onConflict: "user_id,bucket,window_start" },
+        );
 
         // ---- Parse body ----
         let body: ChatBody;
@@ -134,7 +132,11 @@ export const Route = createFileRoute("/api/chat")({
 - Annual baseline: ${profile?.baseline_kg_co2e_year ? formatKgCo2e(Number(profile.baseline_kg_co2e_year)) + "/yr" : "not estimated yet"}
 
 Last 30 days total: ${formatKgCo2e(last30)} across ${activityList.length} activities.
-Per-category totals: ${Object.entries(totals).map(([k, v]) => `${k}=${formatKgCo2e(v)}`).join(", ") || "no data yet"}
+Per-category totals: ${
+          Object.entries(totals)
+            .map(([k, v]) => `${k}=${formatKgCo2e(v)}`)
+            .join(", ") || "no data yet"
+        }
 
 Recent entries:
 ${topFactors || "(no activities logged yet — encourage the user to log a few)"}`;

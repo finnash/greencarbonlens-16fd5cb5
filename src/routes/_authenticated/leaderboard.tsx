@@ -15,7 +15,8 @@ export const Route = createFileRoute("/_authenticated/leaderboard")({
       { title: "Leaderboard · CarbonLens" },
       {
         name: "description",
-        content: "Anonymous CarbonLens community leaderboard — kg CO₂e saved this week and all-time.",
+        content:
+          "Anonymous CarbonLens community leaderboard — kg CO₂e saved this week and all-time.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -52,11 +53,7 @@ function LeaderboardPage() {
           Anonymized by display name. Ranked by kg CO₂e saved from completed challenges.
         </p>
 
-        <Tabs
-          value={metric}
-          onValueChange={(v) => setMetric(v as "week" | "all")}
-          className="mt-6"
-        >
+        <Tabs value={metric} onValueChange={(v) => setMetric(v as "week" | "all")} className="mt-6">
           <TabsList>
             <TabsTrigger value="week">This week</TabsTrigger>
             <TabsTrigger value="all">All time</TabsTrigger>

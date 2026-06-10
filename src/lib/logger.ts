@@ -23,7 +23,8 @@ function currentLevel(): LogLevel {
   // `import.meta.env.DEV` is replaced at build time on the client; on the
   // server we read NODE_ENV from process.env which Vite preserves.
   const isDev =
-    (typeof import.meta !== "undefined" && (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env?.DEV) ||
+    (typeof import.meta !== "undefined" &&
+      (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env?.DEV) ||
     (typeof process !== "undefined" && process.env?.NODE_ENV !== "production");
   return isDev ? "debug" : "info";
 }

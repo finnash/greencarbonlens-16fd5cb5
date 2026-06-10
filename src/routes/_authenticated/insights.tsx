@@ -21,7 +21,8 @@ export const Route = createFileRoute("/_authenticated/insights")({
       { title: "Insights · CarbonLens" },
       {
         name: "description",
-        content: "Explore your top emission sources and simulate cuts with the What-If carbon simulator.",
+        content:
+          "Explore your top emission sources and simulate cuts with the What-If carbon simulator.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -67,7 +68,14 @@ function InsightsPage() {
             >
               <ArrowLeft className="size-4" />
             </Button>
-            <img src={logoUrl} alt="" aria-hidden width={28} height={28} className="size-7 rounded" />
+            <img
+              src={logoUrl}
+              alt=""
+              aria-hidden
+              width={28}
+              height={28}
+              className="size-7 rounded"
+            />
             <span>Insights</span>
           </div>
           <Link

@@ -1,10 +1,6 @@
 import { useMemo } from "react";
 
-import {
-  breakdownByCategory,
-  formatKgCo2e,
-  type ActivityCategory,
-} from "@/lib/carbon";
+import { breakdownByCategory, formatKgCo2e, type ActivityCategory } from "@/lib/carbon";
 
 const CATEGORY_LABEL: Record<ActivityCategory, string> = {
   transport: "Transport",
@@ -21,11 +17,7 @@ interface Activity {
   readonly kg_co2e: number;
 }
 
-export function CategoryBreakdown({
-  activities,
-}: {
-  activities: ReadonlyArray<Activity>;
-}) {
+export function CategoryBreakdown({ activities }: { activities: ReadonlyArray<Activity> }) {
   const rows = useMemo(() => {
     const map = breakdownByCategory(activities);
     const total = Object.values(map).reduce((a, b) => a + b, 0);
@@ -44,9 +36,7 @@ export function CategoryBreakdown({
       role="region"
       aria-label="Emissions by category"
     >
-      <p className="text-xs uppercase tracking-wider text-muted-foreground">
-        By category
-      </p>
+      <p className="text-xs uppercase tracking-wider text-muted-foreground">By category</p>
       {rows.length === 0 ? (
         <p className="mt-4 text-sm text-muted-foreground">
           Log activities to see your category breakdown.
@@ -69,10 +59,7 @@ export function CategoryBreakdown({
                 aria-valuemax={100}
                 aria-label={`${CATEGORY_LABEL[r.category]} share`}
               >
-                <div
-                  className="h-full rounded-full bg-primary"
-                  style={{ width: `${r.pct}%` }}
-                />
+                <div className="h-full rounded-full bg-primary" style={{ width: `${r.pct}%` }} />
               </div>
             </li>
           ))}

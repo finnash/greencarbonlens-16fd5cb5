@@ -52,7 +52,7 @@ src/
 ## Adding a server function
 
 1. Create or pick a `src/lib/<feature>.functions.ts` file.
-2. Define a **zod** schema for inputs. Server-side validate *every* field —
+2. Define a **zod** schema for inputs. Server-side validate _every_ field —
    never trust the client (re-compute `kg_co2e` from the trusted factor table).
 3. Use the `requireSupabaseAuth` middleware so the call runs scoped to the
    user's RLS context.
@@ -73,7 +73,7 @@ is unreachable from the app.
 
 ## Testing strategy
 
-- **Pure logic (`src/lib/carbon/**`)** — exhaustive Vitest tests; this is the
+- **Pure logic (`src/lib/carbon/**`)\*\* — exhaustive Vitest tests; this is the
   hot path for emission calculations.
 - **Server fns** — exercise zod validation paths against fake input.
 - **UI components** — React Testing Library; assert ARIA roles, not styling.

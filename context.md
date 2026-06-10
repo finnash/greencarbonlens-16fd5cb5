@@ -7,9 +7,9 @@
 ## 1. The Challenge
 
 - **Event:** Google PromptWars — Virtual Challenge 3 (June 8 – June 21, 2026 IST)
-- **Brief (verbatim):** *"Design a solution that helps individuals understand,
+- **Brief (verbatim):** _"Design a solution that helps individuals understand,
   track, and reduce their carbon footprint through simple actions and
-  personalized insights."*
+  personalized insights."_
 - **Submission rules:** public GitHub repo < 10 MB, single branch, max 3
   attempts, time-decay multiplier on score (earlier ⇒ higher).
 - **AI evaluation parameters:** Code Quality, Security, Efficiency, Testing,
@@ -22,9 +22,10 @@ A personal carbon footprint awareness and coaching platform. Mobile-first PWA
 with a clean cold-grey dark UI.
 
 ### Core surfaces
+
 1. **Landing** — public marketing page (SSR + SEO).
 2. **Auth** — email/password + Google (managed Lovable OAuth broker).
-3. **Onboarding quiz** *(Session 2)* — 5 questions → baseline kg CO₂e/year.
+3. **Onboarding quiz** _(Session 2)_ — 5 questions → baseline kg CO₂e/year.
 4. **Dashboard** — current-month emissions, vs. national average, vs. personal
    1.5 °C budget, streak counter.
 5. **Quick Log** — one-tap activity entries (drive, eat, electricity, flight).
@@ -36,6 +37,7 @@ with a clean cold-grey dark UI.
 9. **Leaderboard** — anonymous handles, weekly resets.
 
 ### Out of scope (and why)
+
 - **Computer-vision food scanning / barcode lookup.** Inflates bundle past 10
   MB, fails accessibility, hallucinates results, kills the Code Quality and
   Testing scores. The quiz + log path is more defensible.
@@ -43,13 +45,13 @@ with a clean cold-grey dark UI.
 
 ## 3. Why this scores high on the 5 AI parameters
 
-| Parameter | Engineering choice |
-|---|---|
-| **Code Quality** | Strict TS, ESLint + Prettier, feature folders, zod at every boundary, no `any`, conventional commits, JSDoc on public APIs. |
-| **Security** | RLS on every public-schema table, `user_roles` table separate from `profiles`, `has_role()` SECURITY DEFINER, zod input validation on every serverFn, server-side rate-limit table, no secrets in client bundles. |
-| **Efficiency** | TanStack Query caching, route-level code splitting, O(1) factor lookups, memoized selectors, lazy charts, target bundle < 300 KB gzip. |
-| **Testing** | Vitest unit tests on `src/lib/carbon/` (target ≥ 80 % coverage), React Testing Library on key flows, Playwright smoke on auth + log. GitHub Actions runs lint + typecheck + tests on every push. |
-| **Accessibility** | Semantic HTML, single `<main>` per route, shadcn/Radix primitives, all icon buttons `aria-label`-ed, skip-link, `h-dvh`, `prefers-reduced-motion`, color-contrast AA, full keyboard nav. |
+| Parameter         | Engineering choice                                                                                                                                                                                                |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Code Quality**  | Strict TS, ESLint + Prettier, feature folders, zod at every boundary, no `any`, conventional commits, JSDoc on public APIs.                                                                                       |
+| **Security**      | RLS on every public-schema table, `user_roles` table separate from `profiles`, `has_role()` SECURITY DEFINER, zod input validation on every serverFn, server-side rate-limit table, no secrets in client bundles. |
+| **Efficiency**    | TanStack Query caching, route-level code splitting, O(1) factor lookups, memoized selectors, lazy charts, target bundle < 300 KB gzip.                                                                            |
+| **Testing**       | Vitest unit tests on `src/lib/carbon/` (target ≥ 80 % coverage), React Testing Library on key flows, Playwright smoke on auth + log. GitHub Actions runs lint + typecheck + tests on every push.                  |
+| **Accessibility** | Semantic HTML, single `<main>` per route, shadcn/Radix primitives, all icon buttons `aria-label`-ed, skip-link, `h-dvh`, `prefers-reduced-motion`, color-contrast AA, full keyboard nav.                          |
 
 ## 4. Stack
 
