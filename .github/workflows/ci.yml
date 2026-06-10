@@ -6,13 +6,24 @@ on:
   pull_request:
     branches: [main]
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
-    name: Lint · Typecheck · Test · Build
+    name: Verify (Node ${{ matrix.node }})
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
       - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
@@ -22,8 +33,15 @@ jobs:
         run: bun run lint
       - name: Typecheck
         run: bunx tsc --noEmit
-      - name: Unit tests
-        run: bun run test
+      - name: Unit tests (with coverage)
+        run: bunx vitest run --coverage
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-node-${{ matrix.node }}
+          path: coverage/
+          if-no-files-found: ignore
       - name: Build
         run: bun run build
         env:
