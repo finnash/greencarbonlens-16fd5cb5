@@ -58,6 +58,7 @@ export const completeOnboarding = createServerFn({ method: "POST" })
         display_name: data.display_name ?? null,
         baseline_kg_co2e_year: baseline.total,
         onboarding_completed: true,
+        quiz_answers: data.answers,
       })
       .eq("id", userId);
     if (error) throw new Error(error.message);
