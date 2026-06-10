@@ -21,7 +21,7 @@ and reduce emissions through simple daily actions and AI-personalized insights._
 
 **Submission · Google PromptWars Virtual Challenge 3 · June 2026**
 
-[Live demo](https://greencarbonlens.lovable.app) · [Architecture](./ARCHITECTURE.md) · [Security](./SECURITY.md) · [Testing](./TESTING.md) · [Accessibility](./ACCESSIBILITY.md) · [Decisions](./docs/DECISIONS.md) · [Contributing](./CONTRIBUTING.md)
+[Live demo](https://greencarbonlens.lovable.app) · [Architecture](./ARCHITECTURE.md) · [Security](./docs/SECURITY.md) · [Testing](./TESTING.md) · [Accessibility](./ACCESSIBILITY.md) · [Methodology](./docs/CITATIONS.md) · [Decisions](./docs/DECISIONS.md) · [Contributing](./CONTRIBUTING.md)
 
 </div>
 
