@@ -5,6 +5,28 @@ follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added — Session 6 (Challenges, Leaderboard, code-quality lift)
+- `src/lib/challenges.functions.ts` — `listChallenges`, `listMyChallenges`,
+  `joinChallenge`, `updateMyChallenge`, `getLeaderboard` (zod-validated,
+  RLS-scoped, server-side computed `ends_at`).
+- `src/components/challenges/` — `ChallengeCard`, `MyChallenges`,
+  `LeaderboardTable` (semantic table + caption + sr-only description).
+- `src/routes/_authenticated/challenges.tsx` + `leaderboard.tsx` — new
+  feature routes wired into the dashboard header.
+- Migration: seeded 6 starter challenges and added a
+  `public.leaderboard_view` (`security_invoker = true`, anonymized handles).
+- `src/lib/result.ts` + `src/lib/logger.ts` — shared Result<T, E> helper
+  and scoped structured logger.
+- `src/lib/carbon/constants.ts` — single source of truth for shared
+  numeric constants (Paris budget, commute days, etc).
+- New tests: `result.test.ts`, `logger.test.ts`, `carbon/constants.test.ts`,
+  `carbon/factors.test.ts`, `challenges.functions.test.ts`. Coverage
+  thresholds raised: lines/functions/statements 80 → 85, branches 70 → 75.
+- Repo polish: `.prettierrc`, `.prettierignore`, `.editorconfig`, `.nvmrc`,
+  `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `.github/PULL_REQUEST_TEMPLATE.md`,
+  issue templates, `dependabot.yml`. New `docs/` guide:
+  `DEVELOPMENT.md`, `DEPLOYMENT.md`, `DECISIONS.md` (ADRs 0001–0006).
+
 ### Added — Session 3 (Dashboard + Quick Log)
 - `src/assets/carbonlens-logo.png` & `carbonlens-banner.png` (Gemini 3 image
   generation) — wired into landing, dashboard, and README cover.
