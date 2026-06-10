@@ -4,7 +4,7 @@
  */
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { type estimateBaselineKgPerYear, formatKgCo2e } from "@/lib/carbon";
+import { estimateBaselineKgPerYear, formatKgCo2e } from "@/lib/carbon";
 
 export function ResultStep({
   estimate,
