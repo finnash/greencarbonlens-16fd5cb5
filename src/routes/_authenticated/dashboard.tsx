@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { BarChart3, LogOut, MessageSquareText, Sparkles } from "lucide-react";
+import { BarChart3, LogOut, MessageSquareText, Sparkles, Trophy, Award } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -87,6 +87,22 @@ function Dashboard() {
                 <Link to="/insights" aria-label="Open insights">
                   <BarChart3 className="size-4" />
                   <span className="hidden sm:inline">Insights</span>
+                </Link>
+              </Button>
+            ) : null}
+            {profile?.onboarding_completed ? (
+              <Button asChild variant="outline" size="sm">
+                <Link to="/challenges" aria-label="Open challenges">
+                  <Award className="size-4" />
+                  <span className="hidden sm:inline">Challenges</span>
+                </Link>
+              </Button>
+            ) : null}
+            {profile?.onboarding_completed ? (
+              <Button asChild variant="outline" size="sm">
+                <Link to="/leaderboard" aria-label="Open leaderboard">
+                  <Trophy className="size-4" />
+                  <span className="hidden sm:inline">Leaderboard</span>
                 </Link>
               </Button>
             ) : null}
