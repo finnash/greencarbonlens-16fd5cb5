@@ -19,6 +19,7 @@ import { QuickLogSheet } from "@/components/QuickLogSheet";
 import { TrendChart } from "@/components/dashboard/TrendChart";
 import { CategoryBreakdown } from "@/components/dashboard/CategoryBreakdown";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
+import { StatCard } from "@/components/dashboard/StatCard";
 import logoUrl from "@/assets/carbonlens-logo.png";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -194,23 +195,5 @@ function Dashboard() {
         )}
       </section>
     </main>
-  );
-}
-
-function StatCard({
-  label,
-  value,
-  suffix,
-}: {
-  label: string;
-  value: string;
-  suffix: string;
-}) {
-  return (
-    <div className="rounded-xl border border-border/70 bg-card p-5">
-      <p className="text-xs uppercase tracking-wider text-muted-foreground">{label}</p>
-      <p className="mt-2 text-2xl font-semibold tracking-tight tabular-nums">{value}</p>
-      <p className="mt-1 text-xs text-muted-foreground">{suffix}</p>
-    </div>
   );
 }
