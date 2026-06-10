@@ -118,7 +118,11 @@ export const updateMyChallenge = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => updateInput.parse(data))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const patch: Record<string, unknown> = { status: data.status };
+    const patch: {
+      status: typeof data.status;
+      completed_at?: string | null;
+      kg_co2e_saved?: number;
+    } = { status: data.status };
     if (data.status === "completed") patch.completed_at = new Date().toISOString();
     if (typeof data.kg_co2e_saved === "number") patch.kg_co2e_saved = data.kg_co2e_saved;
     const { error } = await supabase
