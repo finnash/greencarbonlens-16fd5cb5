@@ -96,7 +96,12 @@ See `SECURITY.md` for the threat model.
       to `coach_messages` via `onFinish`. `/coach` page using `useChat` +
       `DefaultChatTransport`, markdown rendering, suggested prompts, clear
       history, history restore. Coach button added to dashboard header.
-- [ ] **Session 5 — Insights + what-if simulator**
+- [x] **Session 5 — Insights + what-if simulator:** `profiles.quiz_answers`
+      jsonb column + persistence in `completeOnboarding`. Pure
+      `src/lib/carbon/simulator.ts` (commute mode, commute reduction,
+      renewable share, diet switch, flights) with 5 Vitest tests. `/insights`
+      route showing 90-day stats, trend, category breakdown, top emitters,
+      and live What-If simulator with reset + aria-live projection.
 - [ ] **Session 6 — Challenges + leaderboard**
 - [ ] **Session 7 — Polish, a11y audit, perf, README final**
 
