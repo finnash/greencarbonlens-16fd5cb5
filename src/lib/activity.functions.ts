@@ -12,6 +12,7 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { computeKgCo2e } from "@/lib/carbon/calculator";
 import { FACTORS, type FactorSlug } from "@/lib/carbon/factors";
 import { ACTIVITY_CATEGORIES } from "@/lib/carbon/types";
+import { MS_PER_DAY, ROLLING_WINDOW_DAYS } from "@/lib/carbon/constants";
 
 const factorSlugSchema = z
   .string()
@@ -65,7 +66,8 @@ export const listActivities = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => listInput.parse(data ?? {}))
   .handler(async ({ data, context }) => {
     const { supabase, userId } = context;
-    const since = data.since ?? new Date(Date.now() - 30 * 86_400_000).toISOString();
+    const since =
+      data.since ?? new Date(Date.now() - ROLLING_WINDOW_DAYS * MS_PER_DAY).toISOString();
     const limit = data.limit ?? 200;
     const { data: rows, error } = await supabase
       .from("activities")

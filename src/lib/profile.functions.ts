@@ -15,6 +15,7 @@ import { quizSchema } from "@/lib/carbon/quiz";
 /** Read the authenticated user's profile (creates implicitly via DB trigger). */
 export const getMyProfile = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({}).optional().parse(data ?? {}))
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const { data, error } = await supabase
@@ -29,6 +30,7 @@ export const getMyProfile = createServerFn({ method: "GET" })
 /** Read profile + quiz answers (used by the What-If simulator). */
 export const getMyProfileFull = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({}).optional().parse(data ?? {}))
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const { data, error } = await supabase
