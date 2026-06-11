@@ -15,12 +15,12 @@ import { formatKgCo2e } from "@/lib/carbon/calculator";
 import { DEFAULT_LEVERS, simulate, type ScenarioLevers } from "@/lib/carbon/simulator";
 import type { QuizAnswers } from "@/lib/carbon/types";
 
-interface Props {
+interface SimulatorProps {
   answers: QuizAnswers;
   baseline: number;
 }
 
-export function Simulator({ answers, baseline }: Props) {
+export function Simulator({ answers, baseline }: SimulatorProps) {
   const initial: ScenarioLevers = {
     ...DEFAULT_LEVERS,
     flightsLongPerYear: answers.flights_long_per_year,
@@ -160,8 +160,12 @@ export function Simulator({ answers, baseline }: Props) {
   );
 }
 
+/**
+ * Visual wrapper for a single simulator lever (label + control).
+ * Provides consistent spacing without leaking layout into the parent.
+ */
 function LeverBlock({ children }: { children: React.ReactNode }) {
-  return <div>{children}</div>;
+  return <div className="space-y-1.5">{children}</div>;
 }
 
 function SliderRow({
