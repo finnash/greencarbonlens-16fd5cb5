@@ -28,3 +28,6 @@ export const ROLLING_WINDOW_DAYS = 30;
 
 /** Max coach messages per user per hour (defense-in-depth + cost guard). */
 export const COACH_MESSAGES_PER_HOUR = 30;
+
+/** Milliseconds in one day. Centralized to avoid `n * 86_400_000` magic numbers. */
+export const MS_PER_DAY = 86_400_000;

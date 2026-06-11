@@ -7,12 +7,17 @@
  */
 import { getFactor, type FactorSlug } from "./factors";
 import type { ActivityCategory, QuizAnswers } from "./types";
+import {
+  COMMUTE_DAYS_PER_YEAR,
+  GLOBAL_AVG_KG_PER_YEAR,
+  LONG_HAUL_RETURN_KM,
+  PARIS_BUDGET_KG_PER_YEAR,
+} from "./constants";
 
-/** Per-person 1.5 °C-compatible budget (IPCC AR6 SR1.5, ~2 t CO2e/yr). */
-export const PARIS_BUDGET_KG_PER_YEAR = 2_000;
-
-/** Rough global mean per-capita lifestyle footprint, kg CO2e/yr. */
-export const GLOBAL_AVG_KG_PER_YEAR = 4_700;
+// Re-export the legacy names so callers that historically imported them
+// from `calculator` keep working without churn. `constants.ts` is the
+// single source of truth.
+export { GLOBAL_AVG_KG_PER_YEAR, PARIS_BUDGET_KG_PER_YEAR };
 
 /**
  * Compute kg CO2e for a single activity entry.
@@ -53,7 +58,6 @@ export function estimateBaselineKgPerYear(q: QuizAnswers): {
   total: number;
   byCategory: Record<ActivityCategory, number>;
 } {
-  const COMMUTE_DAYS = 240; // ~working days per year
   const commuteFactor: FactorSlug =
     q.commute === "car_petrol"
       ? "car_petrol_medium"
@@ -63,7 +67,10 @@ export function estimateBaselineKgPerYear(q: QuizAnswers): {
           ? "bus_local"
           : "cycling";
   // Round-trip per commuting day.
-  const transport = computeKgCo2e(commuteFactor, q.commute_km_per_day * 2 * COMMUTE_DAYS);
+  const transport = computeKgCo2e(
+    commuteFactor,
+    q.commute_km_per_day * 2 * COMMUTE_DAYS_PER_YEAR,
+  );
 
   const energy = computeKgCo2e("electricity_grid_avg", q.electricity_kwh_month * 12);
 
@@ -76,8 +83,8 @@ export function estimateBaselineKgPerYear(q: QuizAnswers): {
   };
   const food = round(dietPerYear[q.diet], 4);
 
-  // Average long-haul return trip ≈ 11,000 km.
-  const travel = computeKgCo2e("flight_long_eco", q.flights_long_per_year * 11_000);
+  // Average long-haul return trip ≈ LONG_HAUL_RETURN_KM.
+  const travel = computeKgCo2e("flight_long_eco", q.flights_long_per_year * LONG_HAUL_RETURN_KM);
 
   const byCategory = {
     transport,
@@ -105,6 +112,11 @@ export function formatKgCo2e(kg: number): string {
 export function budgetUsedPct(annualKg: number, budget = PARIS_BUDGET_KG_PER_YEAR): number {
   if (budget <= 0) return 0;
   return clamp(round((annualKg / budget) * 100, 1), 0, 999);
+}
+
+/** Express `annualKg` as a percentage of the global per-capita average. */
+export function globalAvgPct(annualKg: number): number {
+  return Math.round((annualKg / GLOBAL_AVG_KG_PER_YEAR) * 100);
 }
 
 function round(n: number, decimals: number): number {
