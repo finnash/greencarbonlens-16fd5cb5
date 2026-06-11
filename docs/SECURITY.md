@@ -28,12 +28,26 @@ flights per year). It is not regulated PHI/PII but is treated as private.
 - **AuthZ**: Postgres RLS on every user-owned table. `service_role` is only
   used inside `*.server.ts` helpers and never from a `*.functions.ts`
   top-level import.
-- **Input validation**: every `createServerFn` uses a `.inputValidator(...)`
-  Zod schema. Server-side compute (e.g. `kg_co2e`) is recomputed from a
-  trusted local factor table — clients cannot inflate or deflate metrics.
+- **Input validation**: every `createServerFn` — including the read-only
+  GET handlers that accept no payload — declares a `.inputValidator(...)`
+  Zod schema, so the "no extra fields" contract is explicit. The streaming
+  `/api/chat` route validates its JSON body with Zod and caps both message
+  count and user text length. Server-side compute (e.g. `kg_co2e`) is
+  recomputed from a trusted local factor table — clients cannot inflate or
+  deflate metrics.
 - **Transport**: HTTPS-only via the Lovable edge.
-- **Headers**: a `Content-Security-Policy` meta tag scopes scripts/styles
-  to self and the Supabase host. Toaster + chat surfaces use `aria-live`.
+- **HTTP security headers**: `src/server.ts` stamps every outgoing
+  response with `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`,
+  `Referrer-Policy: strict-origin-when-cross-origin`, a hardened
+  `Permissions-Policy`, and a `Content-Security-Policy: frame-ancestors 'none'`
+  header (HTTP delivery is required — meta-tag CSP cannot enforce
+  `frame-ancestors`). A document-level CSP meta tag in `__root.tsx`
+  additionally scopes scripts/styles/connect-src.
+- **Rate limiting**: the AI Coach endpoint enforces 30 messages per user
+  per hour via a Postgres-backed bucket scoped by `auth.uid()`.
+- **Safe logging**: server error paths log only the `.message` string,
+  never the raw error object, so upstream provider response bodies cannot
+  accidentally leak user prompts into the platform log stream.
 - **Secrets**: `LOVABLE_API_KEY`, Supabase service-role and DB URL live in
   the platform secret store. None are exposed to the client bundle.
 - **Dependencies**: Dependabot weekly + `bun audit` in CI gating PRs.
