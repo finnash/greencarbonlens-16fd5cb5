@@ -10,6 +10,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { createLogger } from "@/lib/logger";
+import { computeEndsAt } from "@/lib/challenges.helpers";
 
 const log = createLogger("challenges");
 
@@ -46,6 +47,7 @@ const updateInput = z.object({
 /** List every active challenge in the catalogue. Public-safe (no PII). */
 export const listChallenges = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({}).optional().parse(data ?? {}))
   .handler(async ({ context }) => {
     const { supabase } = context;
     const { data, error } = await supabase
@@ -65,6 +67,7 @@ export const listChallenges = createServerFn({ method: "GET" })
 /** List the caller's joined challenges. */
 export const listMyChallenges = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({}).optional().parse(data ?? {}))
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const { data, error } = await supabase
@@ -97,7 +100,7 @@ export const joinChallenge = createServerFn({ method: "POST" })
     if (!ch || !ch.is_active) throw new Error("Challenge not found");
 
     const startedAt = new Date();
-    const endsAt = new Date(startedAt.getTime() + ch.duration_days * 86_400_000);
+    const endsAt = computeEndsAt(startedAt, ch.duration_days);
     const { data: row, error } = await supabase
       .from("user_challenges")
       .insert({
@@ -139,6 +142,7 @@ export const updateMyChallenge = createServerFn({ method: "POST" })
 /** Anonymized leaderboard (week + all-time). Top 50 only. */
 export const getLeaderboard = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
+  .inputValidator((data: unknown) => z.object({}).optional().parse(data ?? {}))
   .handler(async ({ context }) => {
     const { supabase } = context;
     const { data, error } = await supabase

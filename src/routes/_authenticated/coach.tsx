@@ -1,9 +1,10 @@
+import { useEffect, useMemo, useRef, useState } from "react";
+
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, Send, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -11,9 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Skeleton } from "@/components/ui/skeleton";
+import { CoachEmptyState, MessageBubble } from "@/components/coach";
 import { getCoachHistory, clearCoachHistory } from "@/lib/coach.functions";
-import { MessageBubble } from "@/components/coach/MessageBubble";
-import { CoachEmptyState } from "@/components/coach/EmptyState";
 import logoUrl from "@/assets/carbonlens-logo.png";
 
 export const Route = createFileRoute("/_authenticated/coach")({

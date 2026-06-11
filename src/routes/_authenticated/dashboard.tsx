@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useQuery } from "@tanstack/react-query";
-import { BarChart3, LogOut, MessageSquareText, Sparkles, Trophy, Award } from "lucide-react";
+import { Award, BarChart3, LogOut, MessageSquareText, Sparkles, Trophy } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -11,16 +11,47 @@ import {
   PARIS_BUDGET_KG_PER_YEAR,
   budgetUsedPct,
   formatKgCo2e,
+  globalAvgPct,
   sumEmissions,
 } from "@/lib/carbon";
 import { getMyProfile } from "@/lib/profile.functions";
 import { listActivities } from "@/lib/activity.functions";
 import { QuickLogSheet } from "@/components/QuickLogSheet";
-import { TrendChart } from "@/components/dashboard/TrendChart";
-import { CategoryBreakdown } from "@/components/dashboard/CategoryBreakdown";
-import { RecentActivity } from "@/components/dashboard/RecentActivity";
-import { StatCard } from "@/components/dashboard/StatCard";
+import {
+  CategoryBreakdown,
+  RecentActivity,
+  StatCard,
+  TrendChart,
+} from "@/components/dashboard";
 import logoUrl from "@/assets/carbonlens-logo.png";
+
+/** Routes surfaced after onboarding completes. Keeps the JSX flat + readable. */
+const NAV_LINKS = [
+  { to: "/coach", icon: MessageSquareText, label: "Coach" },
+  { to: "/insights", icon: BarChart3, label: "Insights" },
+  { to: "/challenges", icon: Award, label: "Challenges" },
+  { to: "/leaderboard", icon: Trophy, label: "Leaderboard" },
+] as const;
+
+type ProfileLike = { onboarding_completed?: boolean | null } | null | undefined;
+
+/** Onboarding-gated header actions. Renders nothing until the quiz is done. */
+function NavActions({ profile, userId }: { profile: ProfileLike; userId: string }) {
+  if (!profile?.onboarding_completed) return null;
+  return (
+    <>
+      <QuickLogSheet userId={userId} />
+      {NAV_LINKS.map(({ to, icon: Icon, label }) => (
+        <Button key={to} asChild variant="outline" size="sm">
+          <Link to={to} aria-label={`Open ${label.toLowerCase()}`}>
+            <Icon className="size-4" />
+            <span className="hidden sm:inline">{label}</span>
+          </Link>
+        </Button>
+      ))}
+    </>
+  );
+}
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
   head: () => ({
@@ -74,39 +105,7 @@ function Dashboard() {
             <span>CarbonLens</span>
           </div>
           <div className="flex items-center gap-2">
-            {profile?.onboarding_completed ? <QuickLogSheet userId={user.id} /> : null}
-            {profile?.onboarding_completed ? (
-              <Button asChild variant="outline" size="sm">
-                <Link to="/coach" aria-label="Open AI Coach">
-                  <MessageSquareText className="size-4" />
-                  <span className="hidden sm:inline">Coach</span>
-                </Link>
-              </Button>
-            ) : null}
-            {profile?.onboarding_completed ? (
-              <Button asChild variant="outline" size="sm">
-                <Link to="/insights" aria-label="Open insights">
-                  <BarChart3 className="size-4" />
-                  <span className="hidden sm:inline">Insights</span>
-                </Link>
-              </Button>
-            ) : null}
-            {profile?.onboarding_completed ? (
-              <Button asChild variant="outline" size="sm">
-                <Link to="/challenges" aria-label="Open challenges">
-                  <Award className="size-4" />
-                  <span className="hidden sm:inline">Challenges</span>
-                </Link>
-              </Button>
-            ) : null}
-            {profile?.onboarding_completed ? (
-              <Button asChild variant="outline" size="sm">
-                <Link to="/leaderboard" aria-label="Open leaderboard">
-                  <Trophy className="size-4" />
-                  <span className="hidden sm:inline">Leaderboard</span>
-                </Link>
-              </Button>
-            ) : null}
+            <NavActions profile={profile} userId={user.id} />
             <span className="hidden text-xs text-muted-foreground sm:inline">{user.email}</span>
             <Button variant="ghost" size="sm" onClick={signOut} aria-label="Sign out">
               <LogOut className="size-4" />
@@ -169,7 +168,7 @@ function Dashboard() {
               />
               <StatCard
                 label="vs. global average"
-                value={`${Math.round((baseline / GLOBAL_AVG_KG_PER_YEAR) * 100)}%`}
+                value={`${globalAvgPct(baseline)}%`}
                 suffix={`of ${formatKgCo2e(GLOBAL_AVG_KG_PER_YEAR)}`}
               />
               <StatCard

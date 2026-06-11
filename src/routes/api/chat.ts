@@ -11,14 +11,28 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createClient } from "@supabase/supabase-js";
+import { z } from "zod";
 
 import type { Database } from "@/integrations/supabase/types";
-import { FACTORS, type FactorSlug } from "@/lib/carbon/factors";
-import { formatKgCo2e, sumEmissions } from "@/lib/carbon/calculator";
+import { sumEmissions } from "@/lib/carbon/calculator";
+import {
+  COACH_MESSAGES_PER_HOUR,
+  MS_PER_DAY,
+  ROLLING_WINDOW_DAYS,
+} from "@/lib/carbon/constants";
+import { buildGroundingPrompt, extractText, rateLimitWindowStart } from "./chat.helpers";
 
-const RATE_LIMIT_PER_HOUR = 30;
+/** Hard caps on conversation history sent in one POST. */
+const MAX_MESSAGES = 50;
+const MAX_USER_TEXT_CHARS = 4_000;
 
-type ChatBody = { messages?: UIMessage[] };
+/** Zod schema for the inbound chat body — defense-in-depth, never trust the client. */
+const chatBodySchema = z.object({
+  messages: z
+    .array(z.object({ id: z.string().optional(), role: z.string() }).passthrough())
+    .min(1)
+    .max(MAX_MESSAGES),
+});
 
 const SYSTEM_PROMPT = `You are CarbonLens Coach, an evidence-based sustainability assistant.
 
@@ -59,9 +73,7 @@ export const Route = createFileRoute("/api/chat")({
         }
 
         // ---- Rate limit (hour bucket) ----
-        const windowStart = new Date();
-        windowStart.setMinutes(0, 0, 0);
-        const winIso = windowStart.toISOString();
+        const winIso = rateLimitWindowStart(new Date()).toISOString();
         const { data: existing } = await supabase
           .from("rate_limits")
           .select("count")
@@ -70,7 +82,7 @@ export const Route = createFileRoute("/api/chat")({
           .eq("window_start", winIso)
           .maybeSingle();
         const current = existing?.count ?? 0;
-        if (current >= RATE_LIMIT_PER_HOUR) {
+        if (current >= COACH_MESSAGES_PER_HOUR) {
           return new Response("Rate limit reached. Try again next hour.", { status: 429 });
         }
         await supabase.from("rate_limits").upsert(
@@ -84,19 +96,20 @@ export const Route = createFileRoute("/api/chat")({
         );
 
         // ---- Parse body ----
-        let body: ChatBody;
+        let rawBody: unknown;
         try {
-          body = (await request.json()) as ChatBody;
+          rawBody = await request.json();
         } catch {
           return new Response("Invalid JSON", { status: 400 });
         }
-        const messages = Array.isArray(body.messages) ? body.messages : [];
-        if (messages.length === 0) {
-          return new Response("messages required", { status: 400 });
+        const parsed = chatBodySchema.safeParse(rawBody);
+        if (!parsed.success) {
+          return new Response("Invalid request body", { status: 400 });
         }
+        const messages = parsed.data.messages as unknown as UIMessage[];
 
         // ---- Ground the model in the user's real data ----
-        const since = new Date(Date.now() - 30 * 86_400_000).toISOString();
+        const since = new Date(Date.now() - ROLLING_WINDOW_DAYS * MS_PER_DAY).toISOString();
         const [{ data: acts }, { data: profile }] = await Promise.all([
           supabase
             .from("activities")
@@ -113,37 +126,12 @@ export const Route = createFileRoute("/api/chat")({
         ]);
 
         const activityList = acts ?? [];
-        const totals: Record<string, number> = {};
-        for (const a of activityList) {
-          totals[a.category] = (totals[a.category] ?? 0) + Number(a.kg_co2e);
-        }
         const last30 = sumEmissions(activityList as { kg_co2e: number }[]);
-        const topFactors = activityList
-          .slice(0, 8)
-          .map((a) => {
-            const meta = FACTORS[a.factor_slug as FactorSlug];
-            return `- ${meta?.name ?? a.factor_slug}: ${a.amount} ${a.unit} → ${formatKgCo2e(Number(a.kg_co2e))}`;
-          })
-          .join("\n");
-
-        const groundingPrompt = `User profile:
-- Name: ${profile?.display_name ?? "friend"}
-- Country: ${profile?.country_code ?? "unknown"}
-- Annual baseline: ${profile?.baseline_kg_co2e_year ? formatKgCo2e(Number(profile.baseline_kg_co2e_year)) + "/yr" : "not estimated yet"}
-
-Last 30 days total: ${formatKgCo2e(last30)} across ${activityList.length} activities.
-Per-category totals: ${
-          Object.entries(totals)
-            .map(([k, v]) => `${k}=${formatKgCo2e(v)}`)
-            .join(", ") || "no data yet"
-        }
-
-Recent entries:
-${topFactors || "(no activities logged yet — encourage the user to log a few)"}`;
+        const groundingPrompt = buildGroundingPrompt(profile ?? null, activityList, last30);
 
         // ---- Persist user message (last UI message text) ----
         const lastUser = [...messages].reverse().find((m) => m.role === "user");
-        const userText = extractText(lastUser);
+        const userText = extractText(lastUser).slice(0, MAX_USER_TEXT_CHARS);
         if (userText) {
           await supabase.from("coach_messages").insert({
             user_id: userId,
@@ -177,21 +165,13 @@ ${topFactors || "(no activities logged yet — encourage the user to log a few)"
           });
           return result.toUIMessageStreamResponse({ originalMessages: messages });
         } catch (err) {
-          const msg = err instanceof Error ? err.message : "AI request failed";
-          console.error("[chat] streamText error", err);
-          return new Response(msg, { status: 502 });
+          // Log only the message — full error objects can echo upstream
+          // provider response bodies and accidentally surface user prompts.
+          const safeMsg = err instanceof Error ? err.message : "unknown";
+          console.error("[chat] streamText error", { message: safeMsg });
+          return new Response("AI request failed", { status: 502 });
         }
       },
     },
   },
 });
-
-function extractText(message: UIMessage | undefined): string {
-  if (!message) return "";
-  const parts = (message as { parts?: Array<{ type: string; text?: string }> }).parts;
-  if (!parts) return "";
-  return parts
-    .filter((p) => p.type === "text")
-    .map((p) => p.text ?? "")
-    .join("");
-}

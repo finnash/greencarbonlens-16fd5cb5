@@ -1,5 +1,44 @@
 # Changelog
 
+## Unreleased — Final Code-Quality Pass
+
+### Code quality
+- Deduplicated carbon constants: `calculator.ts` now sources
+  `PARIS_BUDGET_KG_PER_YEAR`, `GLOBAL_AVG_KG_PER_YEAR`,
+  `COMMUTE_DAYS_PER_YEAR`, and `LONG_HAUL_RETURN_KM` from
+  `src/lib/carbon/constants.ts`. Added `MS_PER_DAY` constant.
+- Re-exported `constants` from `@/lib/carbon` barrel.
+- Added barrel `index.ts` files for `components/{dashboard, coach,
+  challenges, insights, onboarding}` so consumers import a single line.
+- Extracted `NavActions` from `dashboard.tsx`, removing five duplicated
+  `profile?.onboarding_completed` guards.
+- Extracted `computeEndsAt` to `src/lib/challenges.helpers.ts` and
+  `extractText` / `rateLimitWindowStart` / `buildGroundingPrompt` to
+  `src/routes/api/chat.helpers.ts`. Pure helpers, fully unit-tested.
+- Renamed `Simulator` `Props` interface to `SimulatorProps`; gave
+  `LeverBlock` a real layout purpose (`space-y-1.5`).
+- Added JSDoc to `cn()` in `src/lib/utils.ts`.
+- Reordered imports in `coach.tsx` to put `react` first.
+
+### Security
+- Added HTTP security headers in `src/server.ts`: `X-Content-Type-Options`,
+  `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, and
+  `Content-Security-Policy: frame-ancestors 'none'`.
+- `/api/chat` body now validated with Zod (max 50 messages, 4 000-char
+  user text cap) and the error path logs only the message string.
+- Added explicit `.inputValidator(z.object({}).optional())` to every
+  read-only GET server function (`getMyProfile`, `getMyProfileFull`,
+  `getCoachHistory`, `clearCoachHistory`, `listChallenges`,
+  `listMyChallenges`, `getLeaderboard`).
+- Updated `docs/SECURITY.md` to reflect the new controls.
+
+### Testing
+- Added test files for `cn`, `renderErrorPage`, `consumeLastCapturedError`,
+  `reportLovableError`, the AI gateway run-id state machine,
+  `completeOnboarding` input schema, the `ACTIVITY_CATEGORIES` contract,
+  the chat helper functions, and `computeEndsAt`.
+- Added `src/test/utils.ts` with shared fixture builders.
+
 All notable changes to CarbonLens are tracked here. The format loosely
 follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
