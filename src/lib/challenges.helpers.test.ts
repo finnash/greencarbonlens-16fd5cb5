@@ -9,10 +9,7 @@
  * then replace the import here.
  */
 import { describe, expect, it } from "vitest";
-
-function computeEndsAt(startedAt: Date, durationDays: number): Date {
-  return new Date(startedAt.getTime() + durationDays * 86_400_000);
-}
+import { computeEndsAt } from "./challenges.helpers";
 
 describe("computeEndsAt()", () => {
   it("adds the correct number of milliseconds", () => {

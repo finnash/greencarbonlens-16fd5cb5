@@ -175,13 +175,3 @@ export const Route = createFileRoute("/api/chat")({
     },
   },
 });
-
-function extractText(message: UIMessage | undefined): string {
-  if (!message) return "";
-  const parts = (message as { parts?: Array<{ type: string; text?: string }> }).parts;
-  if (!parts) return "";
-  return parts
-    .filter((p) => p.type === "text")
-    .map((p) => p.text ?? "")
-    .join("");
-}

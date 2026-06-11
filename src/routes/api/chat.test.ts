@@ -9,18 +9,7 @@
 import { describe, expect, it } from "vitest";
 import type { UIMessage } from "ai";
 
-// ---------------------------------------------------------------------------
-// Inline reproduction of extractText (replace with import once exported)
-// ---------------------------------------------------------------------------
-function extractText(message: UIMessage | undefined): string {
-  if (!message) return "";
-  const parts = (message as { parts?: Array<{ type: string; text?: string }> }).parts;
-  if (!parts) return "";
-  return parts
-    .filter((p) => p.type === "text")
-    .map((p) => p.text ?? "")
-    .join("");
-}
+import { extractText, rateLimitWindowStart } from "./chat.helpers";
 
 describe("extractText()", () => {
   it("returns empty string for undefined", () => {
@@ -73,15 +62,6 @@ describe("extractText()", () => {
     expect(extractText(msg)).toBe("");
   });
 });
-
-// ---------------------------------------------------------------------------
-// Rate-limit window-start helper (pure date math inlined in handler)
-// ---------------------------------------------------------------------------
-function rateLimitWindowStart(now: Date): Date {
-  const d = new Date(now);
-  d.setMinutes(0, 0, 0);
-  return d;
-}
 
 describe("rateLimitWindowStart()", () => {
   it("truncates to the current hour", () => {
