@@ -28,44 +28,48 @@ describe("extractText()", () => {
   });
 
   it("returns empty string when message has no parts", () => {
-    expect(extractText({ role: "user" } as UIMessage)).toBe("");
+    expect(extractText({ id: "m1", role: "user" } as unknown as UIMessage)).toBe("");
   });
 
   it("concatenates all text parts", () => {
     const msg = {
+      id: "m2",
       role: "user",
       parts: [
         { type: "text", text: "hello " },
         { type: "text", text: "world" },
       ],
-    } as UIMessage;
+    } as unknown as UIMessage;
     expect(extractText(msg)).toBe("hello world");
   });
 
   it("ignores non-text parts", () => {
     const msg = {
+      id: "m3",
       role: "user",
       parts: [
         { type: "tool-call", text: "ignored" },
         { type: "text", text: "keep this" },
       ],
-    } as UIMessage;
+    } as unknown as UIMessage;
     expect(extractText(msg)).toBe("keep this");
   });
 
   it("returns empty string when all parts are non-text", () => {
     const msg = {
+      id: "m4",
       role: "user",
       parts: [{ type: "tool-call", text: "nope" }],
-    } as UIMessage;
+    } as unknown as UIMessage;
     expect(extractText(msg)).toBe("");
   });
 
   it("handles a part with undefined text gracefully", () => {
     const msg = {
+      id: "m5",
       role: "user",
       parts: [{ type: "text" }],
-    } as UIMessage;
+    } as unknown as UIMessage;
     expect(extractText(msg)).toBe("");
   });
 });

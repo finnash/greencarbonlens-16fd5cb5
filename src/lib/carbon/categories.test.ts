@@ -37,7 +37,7 @@ describe("ACTIVITY_CATEGORIES contract", () => {
     // The TypeScript `as const` means mutations would be type errors.
     // At runtime we verify the array cannot be mutated.
     expect(() => {
-      (ACTIVITY_CATEGORIES as ActivityCategory[]).push("illegal" as ActivityCategory);
+      (ACTIVITY_CATEGORIES as unknown as ActivityCategory[]).push("illegal" as ActivityCategory);
     }).toThrow();
   });
 });
