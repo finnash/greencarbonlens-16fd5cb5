@@ -11,14 +11,28 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
 import { createClient } from "@supabase/supabase-js";
+import { z } from "zod";
 
 import type { Database } from "@/integrations/supabase/types";
-import { FACTORS, type FactorSlug } from "@/lib/carbon/factors";
-import { formatKgCo2e, sumEmissions } from "@/lib/carbon/calculator";
+import { sumEmissions } from "@/lib/carbon/calculator";
+import {
+  COACH_MESSAGES_PER_HOUR,
+  MS_PER_DAY,
+  ROLLING_WINDOW_DAYS,
+} from "@/lib/carbon/constants";
+import { buildGroundingPrompt, extractText, rateLimitWindowStart } from "./chat.helpers";
 
-const RATE_LIMIT_PER_HOUR = 30;
+/** Hard caps on conversation history sent in one POST. */
+const MAX_MESSAGES = 50;
+const MAX_USER_TEXT_CHARS = 4_000;
 
-type ChatBody = { messages?: UIMessage[] };
+/** Zod schema for the inbound chat body — defense-in-depth, never trust the client. */
+const chatBodySchema = z.object({
+  messages: z
+    .array(z.object({ id: z.string().optional(), role: z.string() }).passthrough())
+    .min(1)
+    .max(MAX_MESSAGES),
+});
 
 const SYSTEM_PROMPT = `You are CarbonLens Coach, an evidence-based sustainability assistant.
 
